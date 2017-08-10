@@ -1,8 +1,14 @@
 'use strict'
-var pptx = require("pptxgenjs");
-var fs = require('fs')
+var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
+// var fs = require('fs')
 
 
+function GeneratePowerpoint() {
+
+}
+
+
+GeneratePowerpoint.prototype.generate = function (){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
 
@@ -16,7 +22,10 @@ var fs = require('fs')
     slide.color = '696969'
 
     return pptx.save('../public/presentations/' + fileName)
+}
 
+
+module.exports = {GeneratePowerpoint: GeneratePowerpoint}
 
 
 // class GenerateTestDetailsExcel{

@@ -1,5 +1,5 @@
 {
-  "name": "golf-score-card",
+  "name": "autopowerpoint",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,8 +15,10 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
     "morgan": "~1.8.1",
     "nodemon": "^1.11.0",
+    "pptxgenjs": "^1.7.0",
     "pug": "~2.0.0-beta11",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
