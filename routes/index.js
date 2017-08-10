@@ -22,12 +22,13 @@ router.post('/generatepowerpoint/', function(req, res, next)        {
                     'Content-Disposition': 'attachment; filename="' + filename + '"'
                 }
             };
-            res.sendFile(filename, options, function(err) {
-                if (err) {
-                    console.log(err);
-                    res.render('error', {title: err.status});
-                }
-            })
+            res.render('index', {title: 'created'})
+            // res.sendFile(filename, options, function(err) {
+            //     if (err) {
+            //         console.log(err);
+            //         res.render('error', {title: err.status});
+            //     }
+            // })
         }
     )
 
