@@ -7,32 +7,36 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'AutoPowerpoint' });
 });
 
-router.post('/generatepowerpoint/', function(req, res, next)        {
+router.post('/generatepowerpoint/', function(req, res, next){
     var filename = req.body.fileName
     var text = req.body.slideText
 
-    Utils.generate(filename, text,
-        function(result) {
-            var options = {
-                root: __dirname + '/../public/presentations/',
-                dotfiles: 'deny',
-                headers: {
-                    'x-timestamp': Date.now(),
-                    'x-sent': true,
-                    'Content-Disposition': 'attachment; filename="' + filename + '"'
-                }
-            };
-            res.render('index', {title: 'created'})
-            // res.sendFile(filename, options, function(err) {
-            //     if (err) {
-            //         console.log(err);
-            //         res.render('error', {title: err.status});
-            //     }
-            // })
-        }
+    // Utils.generate(filename, text,
+    //     function(result) {
+    //         var options = {
+    //             root: __dirname + '/../public/presentations/',
+    //             dotfiles: 'deny',
+    //             headers: {
+    //                 'x-timestamp': Date.now(),
+    //                 'x-sent': true,
+    //                 'Content-Disposition': 'attachment; filename="' + filename + '"'
+    //             }
+    //         };
+    //         res.render('index', {title: 'created'})
+    //         // res.sendFile(filename, options, function(err) {
+    //         //     if (err) {
+    //         //         console.log(err);
+    //         //         res.render('error', {title: err.status});
+    //         //     }
+    //         // })
+    //     }
+    // )
+
+    Utils.create(filename, text,
+      function(result){
+        res.send('POST request to the homepage')
+      }
     )
-
 })
-
 
 module.exports = router;

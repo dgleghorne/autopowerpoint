@@ -19,6 +19,9 @@ module.exports = {
                 query: {
                     presets: ['es2015', 'react']
                 }
+            },
+            { test: /\.xml$/,
+              loader: 'xml-loader'
             }
         ]
     },
