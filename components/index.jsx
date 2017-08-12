@@ -32,8 +32,8 @@ export default class Index extends React.Component {
                         <input type='hidden' name='slideText' value={this.state.slideText}/>
                         <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint">Generate</button>
                     </form>
-                    <a href="/presentations/myPowerpoint">Link to power point</a>
-                    <a href="/stylesheets/style.css">Link to power point</a>
+                    {/*<a href="/presentations/myPowerpoint">Link to power point</a>*/}
+                    {/*<a href="/stylesheets/style.css">Link to power point</a>*/}
                   {/*<button className='btn btn-primary' type='button' id='GeneratePowerpoint' onClick={this.generate.bind(this)}>Generate Powerpoint</button>*/}
                 </div>
             </div>
