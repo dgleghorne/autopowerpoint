@@ -3,7 +3,7 @@
 var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
 
 
-function generate(fileName, text, cb){
+function generate(fileName, text){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
 
@@ -17,7 +17,7 @@ function generate(fileName, text, cb){
     slide.color = '696969'
 
     // pptx.save('../public/presentations/' + fileName, cb)
-    pptx.save('localhost:3000/' + fileName, saveCallback)
+    pptx.save('./public/presentations/' + fileName)
 }
 
 function saveCallback(filename) {

@@ -2,40 +2,175 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
-// var GeneratePowerpoint = require('../routes/generatePowerpoint.js');
 import Utils from './Utils.jsx'
 
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          fileName: "myPowerpoint",
+          fileName: "myPowerpoint7",
+          date: '',
+          speaker: "<Insert Speaker's Name Here>",
+          title: "<Insert Title Here>",
+          morning: true,
+          noOfSongs: 4,
+          reading1: "<Insert Bible Reading Here>",
+          reader1: "<Insert Reader Here>",
+          pageNo1: "<Insert Page No Here>",
+          reading2: "<Insert Bible Reading Here>",
+          reader2: "<Insert Reader Here>",
+          pageNo2: "<Insert Page No Here>",
+          songs: [],
           slideText: "Any song, my song"
         }
     }
 
-  // generate(){
-  //       console.log("I'm here!!")
-  //  // var gp = new GeneratePowerpoint()
-  //  // GeneratePowerpoint.generate(this.state.fileName, this.state.slideText)
-  //  //    Utils.generate(this.state.fileName, this.state.slideText)
-  //
-  // }
+    handleChangeDate(e){
+      this.setState({
+        date: e.target.value
+      })
+    }
+
+    handleChangeSpeaker(e){
+      this.setState({
+        speaker: e.target.value
+      })
+    }
+
+    handleChangeTitle(e){
+      this.setState({
+        title: e.target.value
+      })
+    }
+
+    handleChangeMorning(e){
+      this.setState({
+        morning: e.target.value
+      })
+    }
+
+    handleChangeNoOfSongs(e){
+      this.setState({
+        noOfSongs: e.target.value
+      })
+    }
+
+    handleChangeReading1(e){
+      this.setState({
+        reading1: e.target.value
+      })
+    }
+
+    handleChangeReader1(e){
+      this.setState({
+        reader1: e.target.value
+      })
+    }
+
+    handleChangePageNo1(e){
+      this.setState({
+        pageNo1: e.target.value
+      })
+    }
+
+    handleChangeReading2(e){
+      this.setState({
+        reading2: e.target.value
+      })
+    }
+
+    handleChangeReader2(e){
+      this.setState({
+        reader2: e.target.value
+      })
+    }
+
+    handleChangePageNo2(e){
+      this.setState({
+        pageNo2: e.target.value
+      })
+    }
 
     render() {
         return (
             <div className="container-fluid">
-              <h2>Create Powerpoint</h2>
+
+              <div className="row">
+                <h2>Create Powerpoint</h2>
+                <div className="col-md-4">
+                  <label htmlFor="dateInput">Date</label>
+                  <input type='text'className="form-control" id="dateInput" onChange={this.handleChangeDate.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <div className= "row">
+                    <label htmlFor="morningInput">AM/PM</label>
+                      <div className="radio" id="morningInput">
+                        <label><input type="radio" name="optradio"></input>AM</label>
+                        <span>  </span>
+                        <label><input type="radio" name="optradio"></input>PM</label>
+                      </div>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="speakerInput">Speaker</label>
+                  <input type='text'className="form-control" id="speakerInput" onChange={this.handleChangeSpeaker.bind(this)}></input>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-4">
+                  <label htmlFor="titleInput">Title</label>
+                  <input type='text'className="form-control" id="titleInput" onChange={this.handleChangeTitle.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="noOfSongsInput">Songs</label>
+                  <select className="form-control" id="noOfSongsInput" onChange={this.handleChangeNoOfSongs.bind(this)}>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className= "row">
+                <div className="col-md-4">
+                  <label htmlFor="reading1Input">Reading 1</label>
+                  <input type='text'className="form-control" id="reading1Input" onChange={this.handleChangeReading1.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="reader1Input">Reader 1</label>
+                  <input type='text'className="form-control" id="reader1Input" onChange={this.handleChangeReader1.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="pageNo1Input">Reading 1 Page Number</label>
+                  <input type='text'className="form-control" id="pageNo1Input" onChange={this.handleChangePageNo1.bind(this)}></input>
+                </div>
+              </div>
+
+              <div className= "row">
+                <div className="col-md-4">
+                  <label htmlFor="reading2Input">Reading 2</label>
+                  <input type='text'className="form-control" id="reading2Input" onChange={this.handleChangeReading2.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="reader2Input">Reader 2</label>
+                  <input type='text'className="form-control" id="reader2Input" onChange={this.handleChangeReader2.bind(this)}></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="pageNo2Input">Reading 2 Page Number</label>
+                  <input type='text'className="form-control" id="pageNo2Input" onChange={this.handleChangePageNo2.bind(this)}></input>
+                </div>
+              </div>
+
+              <br/>
+              <div className="row">
                 <div className="creationForm">
-                    <form className="form-inline" method="POST" action='/generatepowerpoint/'>
+                    <form className="form-inline" method="POST" action='/generatePowerpoint'>
                         <input type='hidden' name='fileName' value={this.state.fileName}/>
                         <input type='hidden' name='slideText' value={this.state.slideText}/>
                         <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint">Generate</button>
                     </form>
-                    {/*<a href="/presentations/myPowerpoint">Link to power point</a>*/}
-                    {/*<a href="/stylesheets/style.css">Link to power point</a>*/}
-                  {/*<button className='btn btn-primary' type='button' id='GeneratePowerpoint' onClick={this.generate.bind(this)}>Generate Powerpoint</button>*/}
                 </div>
+              </div>
             </div>
         );
     }
