@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import axios from 'axios'
 import Utils from './Utils.jsx'
 
 export default class Index extends React.Component {
@@ -91,6 +92,49 @@ export default class Index extends React.Component {
       })
     }
 
+    generatePowerpoint(){
+      let that = this
+      axios.post('/generatePowerpoint', {
+        fileName: this.state.fileName,
+        slideText: this.state.slideText
+      }).then(function(response){
+        console.log(response);
+      })
+      // }).then(that.downloadPowerpoint())
+      .catch(function(error){
+        console.log(error);
+      })
+    }
+
+    // downloadPowerpoint(){
+    //   axios.post('/downloadpowerpoint', {
+    //       fileName: this.state.fileName
+    //   }).then(function(response){
+    //     console.log(response);
+    //   })
+    //   .catch(function(error){
+    //     console.log(error);
+    //   })
+    // }
+
+    downloadPowerpoint(){
+      axios.get('/downloadpowerpoint', {
+        params:{
+          fileName: this.state.fileName
+        }
+      }).then(function(response){
+        console.log(response);
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    }
+    // <form className="form-inline" method="POST" action='/generatePowerpoint'>
+    //     <input type='hidden' name='fileName' value={this.state.fileName}/>
+    //     <input type='hidden' name='slideText' value={this.state.slideText}/>
+    //     <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint">Generate</button>
+    // </form>
+
     render() {
         return (
             <div className="container-fluid">
@@ -164,11 +208,7 @@ export default class Index extends React.Component {
               <br/>
               <div className="row">
                 <div className="creationForm">
-                    <form className="form-inline" method="POST" action='/generatePowerpoint'>
-                        <input type='hidden' name='fileName' value={this.state.fileName}/>
-                        <input type='hidden' name='slideText' value={this.state.slideText}/>
-                        <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint">Generate</button>
-                    </form>
+                    <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.downloadPowerpoint.bind(this)}>Generate</button>
                 </div>
               </div>
             </div>

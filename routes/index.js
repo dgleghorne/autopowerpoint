@@ -13,14 +13,20 @@ router.post('/generatepowerpoint/', function(req, res){
 
     Utils.generate(filename, text)
     // res.send("All is well!")
-    res.render('download', {title: 'Download Powerpoint'})
+    //res.render('download', {title: 'Download Powerpoint'})
     res.send(filename)
     res.end()
 })
 
+router.post('/downloadpowerpoint/', function(req, res){
+  var filename = req.body.fileName
+  res.download('./public/presentations/' + filename + '.pptx')
+  res.end()
+})
+
 router.get('/downloadpowerpoint/', function(req, res){
   var filename = req.body.fileName
-  res.download('./public/presentations/myPowerpoint6.pptx')
+  res.download('./public/presentations/myPowerpoint7.pptx')
 })
         // function(result) {
         //     var options = {
