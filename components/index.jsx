@@ -4,12 +4,13 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import axios from 'axios'
 import Utils from './Utils.jsx'
+const FileDownload = require('react-file-download');
 
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          fileName: "myPowerpoint7",
+          fileName: "myPowerpoint2",
           date: '',
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
@@ -100,35 +101,35 @@ export default class Index extends React.Component {
       }).then(function(response){
         console.log(response);
       })
-      // }).then(that.downloadPowerpoint())
       .catch(function(error){
         console.log(error);
       })
     }
 
-    // downloadPowerpoint(){
-    //   axios.post('/downloadpowerpoint', {
-    //       fileName: this.state.fileName
-    //   }).then(function(response){
-    //     console.log(response);
-    //   })
-    //   .catch(function(error){
-    //     console.log(error);
-    //   })
-    // }
-
     downloadPowerpoint(){
+      var that = this
+      var filename = that.state.fileName + '.pptx'
       axios.get('/downloadpowerpoint', {
         params:{
-          fileName: this.state.fileName
+          fileName: filename
         }
       }).then(function(response){
         console.log(response);
+        console.log(filename);
+        FileDownload(response.data, filename);
       })
       .catch(function(error){
         console.log(error);
+        console.log(filename);
       })
     }
+
+    returnPowerpoint(){
+      this.generatePowerpoint()
+      this.downloadPowerpoint()
+    }
+
+
     // <form className="form-inline" method="POST" action='/generatePowerpoint'>
     //     <input type='hidden' name='fileName' value={this.state.fileName}/>
     //     <input type='hidden' name='slideText' value={this.state.slideText}/>
@@ -208,7 +209,7 @@ export default class Index extends React.Component {
               <br/>
               <div className="row">
                 <div className="creationForm">
-                    <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.downloadPowerpoint.bind(this)}>Generate</button>
+                    <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.returnPowerpoint.bind(this)}>Generate</button>
                 </div>
               </div>
             </div>

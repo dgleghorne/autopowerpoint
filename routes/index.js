@@ -18,15 +18,35 @@ router.post('/generatepowerpoint/', function(req, res){
     res.end()
 })
 
-router.post('/downloadpowerpoint/', function(req, res){
-  var filename = req.body.fileName
-  res.download('./public/presentations/' + filename + '.pptx')
-  res.end()
-})
+// router.post('/downloadpowerpoint/', function(req, res){
+//   var filename = req.body.fileName
+//   res.download('./public/presentations/' + filename + '.pptx')
+//   res.end()
+// })
 
 router.get('/downloadpowerpoint/', function(req, res){
   var filename = req.body.fileName
-  res.download('./public/presentations/myPowerpoint7.pptx')
+  var path = './public/presentations/' + filename
+  res.send(filename)
+  // res.setHeader('Content-Disposition', 'attachment; filename=' + ' ' + filename)
+  res.download(path)
+  // var options = {
+  //         root: __dirname + '/../public/presentations/',
+  //         dotfiles: 'deny',
+  //         headers: {
+  //             'x-timestamp': Date.now(),
+  //             'x-sent': true,
+  //             'Content-Disposition': 'attachment; filename="' + filename + '"'
+  //           }
+  //   }
+  //   var path = 'myPowerpoint7.pptx'
+  // res.sendFile(path, options, function(err) {
+  //       if (err) {
+  //              console.log(err);
+  //              res.render('error', {title: err.status});
+  //          }
+  // })
+
 })
         // function(result) {
         //     var options = {
