@@ -9,9 +9,12 @@ const FileDownload = require('react-file-download');
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
+        var today = new Date()
+        today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
+
         this.state = {
           fileName: "myPowerpoint2",
-          date: '',
+          date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
           morning: true,
@@ -25,6 +28,13 @@ export default class Index extends React.Component {
           songs: [],
           slideText: "Any song, my song"
         }
+    }
+
+    componentDidMount(){
+      $('#dateInput').datepicker({format: 'dd-mm-yyyy', orientation: 'bottom auto', autoclose: true, todayHighlight: true})
+      $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     }
 
     handleChangeDate(e){
@@ -144,7 +154,12 @@ export default class Index extends React.Component {
                 <h2>Create Powerpoint</h2>
                 <div className="col-md-4">
                   <label htmlFor="dateInput">Date</label>
-                  <input type='text'className="form-control" id="dateInput" onChange={this.handleChangeDate.bind(this)}></input>
+                  <div className='input-group date'>
+                    <input type='text'className="form-control" id="dateInput" value={this.state.date} onChange={this.handleChangeDate.bind(this)}></input>
+                    <div className="input-group-addon">
+                      <span className="glyphicon glyphicon-calendar"></span>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-md-4">
                   <div className= "row">

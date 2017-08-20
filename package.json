@@ -16,6 +16,7 @@
     "express": "~4.15.2",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
+    "jquery": "^3.2.1",
     "morgan": "~1.8.1",
     "nodemon": "^1.11.0",
     "officegen": "^0.4.5",
