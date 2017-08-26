@@ -13,7 +13,7 @@ export default class Index extends React.Component {
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
 
         this.state = {
-          fileName: "myPowerpoint2",
+          fileName: "myPowerpointII",
           date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
@@ -30,12 +30,11 @@ export default class Index extends React.Component {
         }
     }
 
-    componentDidMount(){
-      $('#dateInput').datepicker({format: 'dd-mm-yyyy', orientation: 'bottom auto', autoclose: true, todayHighlight: true})
-      $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-    }
+    // componentDidMount(){
+    //   $(function () {
+    //     $('#datetimepicker1').datetimepicker();
+    //   });
+    // }
 
     handleChangeDate(e){
       this.setState({
@@ -154,7 +153,7 @@ export default class Index extends React.Component {
                 <h2>Create Powerpoint</h2>
                 <div className="col-md-4">
                   <label htmlFor="dateInput">Date</label>
-                  <div className='input-group date'>
+                  <div className='input-group date' id="datetimepicker1">
                     <input type='text'className="form-control" id="dateInput" value={this.state.date} onChange={this.handleChangeDate.bind(this)}></input>
                     <div className="input-group-addon">
                       <span className="glyphicon glyphicon-calendar"></span>
