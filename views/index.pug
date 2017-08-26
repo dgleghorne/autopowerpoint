@@ -1,13 +1,8 @@
 extends layout
 
 block content
-  script(src="/javascripts/bootstrap-datepicker.js" charset="UTF-8")
   script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-  script(type='text/javascript', src='/node_modules/moment/src/moment.js')
-  script(type='text/javascript', src='/node_modules/bootstrap/js/transition.js')
-  script(type='text/javascript', src='/node_modules/bootstrap/js/collapse.js')
-  script(type='text/javascript', src='/node_modules/bootstrap/dist/bootstrap.js')
-  script(type='text/javascript', src='/node_modules/bootstrap-datetimepicker.js')
+  link(rel='stylesheet', href='https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css')
   h1= title
   p Welcome to #{title}
   div#app
