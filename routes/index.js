@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var Utils = require('../components/Utils.jsx')
+const fs = require('fs');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -47,6 +49,19 @@ router.get('/downloadpowerpoint/', function(req, res){
   //          }
   // })
 
+})
+
+router.get('/getAllFileNamesFromDirectory/', function(req, res){
+  var directory = req.body.directory
+  var fileNameArray = []
+  fs.readdir(directory, (err, files) => {
+    files.forEach(file => {
+      console.log(file);
+      fileNameArray.push(file)
+    });
+    return fileNameArray
+  })
+  res.send(fileNameArray)
 })
         // function(result) {
         //     var options = {

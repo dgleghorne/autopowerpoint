@@ -1,7 +1,8 @@
 'use strict'
 
 var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
-
+var firstline = require('firstline')
+var axios = require('axios')
 
 function generate(fileName, text){
     pptx.setAuthor('AutoPowerpoint');
@@ -71,7 +72,30 @@ function addCoffee(){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', font_size: 32, font_face:'Arial', color: '000000', bold: true})
 }
 
+function getAllFileNamesFromDirectory(directory){
+  axios.get('/getAllFileNamesFromDirectory', {
+    params:{
+      directory: directory
+    }
+  }).then(function(response){
+    return response
+  })
+  .catch(function(error){
+    console.log(error);
+    return []
+  })
+}
+
+function getAllFirstLinesFromDirectory(directory){
+  var fileNameArray = getAllFileNamesFromDirectory()
+  var firstLineArray = []
+  fileNameArray.forEach(file => {
+    firstLineArray = firstline(file)
+  })
+  return firstLineArray
+}
+
 var exports = {}
 exports.generate = generate
-//exports.create = create
+exports.getAllFirstLinesFromDirectory = getAllFirstLinesFromDirectory
 module.exports = exports

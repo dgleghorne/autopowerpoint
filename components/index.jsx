@@ -13,6 +13,10 @@ export default class Index extends React.Component {
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
 
+        var songTypeArray = [
+          {id: 1, type:"IPH"}, {id: 2, type:"Psalms"}, {id: 3, type:"Paraphrases"}, {id: 4, type:"Other"}
+        ]
+
         this.state = {
           fileName: "myPowerpointII",
           date: today,
@@ -27,7 +31,12 @@ export default class Index extends React.Component {
           reader2: "<Insert Reader Here>",
           pageNo2: "<Insert Page No Here>",
           songs: [],
-          slideText: "Any song, my song"
+          slideText: "Any song, my song",
+          songTypeSelection: 'na',
+          selectedSongTitle: 'na',
+          selectedSongsArray: [],
+          songTitleArray: [],
+          songTypeArray: songTypeArray
         }
     }
 
@@ -103,6 +112,51 @@ export default class Index extends React.Component {
       })
     }
 
+    handleChangeSongType(e){
+        var typeSelection = e.target.value
+        //Get song type data
+        var directory;
+        switch (typeSelection) {
+            case 'IPH':
+                directory = "./public/songs/IPH/";
+                break;
+            case 'Psalms':
+                directory = "./public/songs/Psalms/";
+                break;
+            case "Paraphrases":
+                directory = "./public/songs/Paraphrases/";
+                break;
+            case "Other":
+                directory = "./public/songs/Other/";
+                break;
+        }
+        var firstlineStrings = Utils.getAllFirstLinesFromDirectory(directory)
+        var titleArray = firstlineStrings.map(function(string, index) {
+          return {id:index, title: string}
+        })
+        //var temp = [{id:1, title: "test"}, {id:2, title: "test2"}]
+        this.setState({
+          songTypeSelection: typeSelection,
+          songTitleArray: titleArray
+        })
+    
+    }
+
+    handleChangeSongTitle(e){
+      this.setState({
+        selectedSongTitle: e.target.value
+      })
+    }
+
+    addSongToList(){
+      var songArray = this.state.selectedSongsArray
+      if(songArray.length > this.state.noOfSongs){
+        //error message
+      }else {
+        songArray.push(this.state.song)
+      }
+    }
+
     generatePowerpoint(){
       let that = this
       axios.post('/generatePowerpoint', {
@@ -134,20 +188,6 @@ export default class Index extends React.Component {
       })
     }
 
-    handleChangeSongType(){
-
-    }
-
-    handleChangeSongTitle(){
-
-    }
-
-    addSongToList(){
-
-    }
-
-
-
     returnPowerpoint(){
       this.generatePowerpoint()
       this.downloadPowerpoint()
@@ -157,14 +197,11 @@ export default class Index extends React.Component {
       return '<button type="button" class="btn btn-danger">Remove <span class="glyphicon glyphicon-trash"></span></button>'
     }
 
-    // <form className="form-inline" method="POST" action='/generatePowerpoint'>
-    //     <input type='hidden' name='fileName' value={this.state.fileName}/>
-    //     <input type='hidden' name='slideText' value={this.state.slideText}/>
-    //     <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint">Generate</button>
-    // </form>
+
+    //var rows = [{id:1, name: "Name"}, {id:2, name: "Nom"}]
 
     render() {
-      var products = [{id:1, name: "Name"}, {id:2, name: "Nom"}]
+      var rows = this.state.selectedSongsArray
         return (
             <div className="container-fluid">
               <div className="row">
@@ -265,43 +302,51 @@ export default class Index extends React.Component {
                         <div className="row">
                           <div className="col-md-4">
                             <label htmlFor="noOfSongsInput">Number of Songs</label>
-                            <select className="form-control" id="noOfSongsInput" onChange={this.handleChangeNoOfSongs.bind(this)}>
-                              <option>4</option>
-                              <option>5</option>
+                            <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
                             </select>
                           </div>
                           <div className="col-md-3">
                             <label htmlFor="addNewSong"></label>
-                            <button type="submit" className="btn btn-primary btn-block" id="addNewSong" onClick={this.addSongToList.bind(this)}>Add New Song <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
+                            <button type="submit" className="btn btn-primary btn-block" id="addNewSong" onClick={this.addSongToList.bind(this)}>Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
                           </div>
                         </div>
                       <br/>
                         <div className="row">
                           <div className="col-md-3">
                             <label htmlFor="songTypeInput">Type</label>
-                            <select className="form-control" id="songTypeInput" onChange={this.handleChangeSongType.bind(this)}>
-                              <option>IPH</option>
-                              <option>Psalms</option>
-                              <option>Paraphrases</option>
-                              <option>Other</option>
+                            <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
+                              <option value="na">--Please select song type--</option>
+                                {
+                                  this.state.songTypeArray.map(function(song) {
+                                    return <option key={song.id}
+                                      value={song.type}>{song.type}</option>;
+                                  })
+                                }
                             </select>
                           </div>
                           <div className="col-md-6">
                             <label htmlFor="songTitleInput">Title</label>
-                            <select className="form-control" id="songTitleInput" onChange={this.handleChangeSongTitle.bind(this)}>
-                              <option>IPH 123 The Name of the song</option>
-                              <option>IPH 31 Song name</option>
+                            <select className="form-control" id="songTitleInput" value={this.state.selectedSongTitle} onChange={this.handleChangeSongTitle.bind(this)}>
+                              <option value="na">--Select Song Type First--</option>
+                                {
+                                  this.state.songTitleArray.map(function(song) {
+                                    return <option key={song.id}
+                                      value={song.title}>{song.title}</option>;
+                                  })
+                                }
                             </select>
                           </div>
                           <div className="col-md-3">
                             <label htmlFor="addSong"></label>
-                            <button type="submit" className="btn btn-success btn-block" id="addSong" onClick={this.addSongToList.bind(this)}>Add <span className="glyphicon glyphicon-plus-sign"></span></button>
+                            <button type="submit" className="btn btn-success btn-block" id="addSong" onClick={this.addSongToList.bind(this)}>Add to presentation <span className="glyphicon glyphicon-plus-sign"></span></button>
                           </div>
                         </div>
                         <br/>
                         <div className="row">
                           <div className="col-md-12">
-                            <BootstrapTable data={products} striped hover>
+                            <BootstrapTable data={rows} striped hover>
                               <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
                               <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
                               <TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>
