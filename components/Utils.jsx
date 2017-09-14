@@ -78,24 +78,26 @@ function getAllFileNamesFromDirectory(directory){
       directory: directory
     }
   }).then(function(response){
+    //console.log("response", response)
     return response
   })
   .catch(function(error){
-    console.log(error);
+    console.log("error", error);
     return []
   })
 }
 
 function getAllFirstLinesFromDirectory(directory){
-  var fileNameArray = getAllFileNamesFromDirectory()
-  var firstLineArray = []
-  fileNameArray.forEach(file => {
-    firstLineArray = firstline(file)
-  })
-  return firstLineArray
+  var fileNameArray = getAllFileNamesFromDirectory(directory)
+  return fileNameArray
+  // var firstLineArray = []
+  // fileNameArray.forEach(file => {
+  //   firstLineArray = firstline(file)
+  // })
+  // return firstLineArray
 }
 
 var exports = {}
 exports.generate = generate
-exports.getAllFirstLinesFromDirectory = getAllFirstLinesFromDirectory
+exports.getAllFileNamesFromDirectory = getAllFileNamesFromDirectory
 module.exports = exports

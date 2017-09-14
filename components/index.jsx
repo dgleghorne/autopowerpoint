@@ -130,7 +130,8 @@ export default class Index extends React.Component {
                 directory = "./public/songs/Other/";
                 break;
         }
-        var firstlineStrings = Utils.getAllFirstLinesFromDirectory(directory)
+        var firstlineStrings = []
+        console.log(Utils.getAllFileNamesFromDirectory(directory))
         var titleArray = firstlineStrings.map(function(string, index) {
           return {id:index, title: string}
         })
@@ -139,7 +140,7 @@ export default class Index extends React.Component {
           songTypeSelection: typeSelection,
           songTitleArray: titleArray
         })
-    
+
     }
 
     handleChangeSongTitle(e){
