@@ -72,20 +72,7 @@ function addCoffee(){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', font_size: 32, font_face:'Arial', color: '000000', bold: true})
 }
 
-function getAllFileNamesFromDirectory(directory){
-  axios.get('/getAllFileNamesFromDirectory', {
-    params:{
-      directory: directory
-    }
-  }).then(function(response){
-    //console.log("response", response)
-    return response
-  })
-  .catch(function(error){
-    console.log("error", error);
-    return []
-  })
-}
+
 
 function getAllFirstLinesFromDirectory(directory){
   var fileNameArray = getAllFileNamesFromDirectory(directory)
@@ -99,5 +86,5 @@ function getAllFirstLinesFromDirectory(directory){
 
 var exports = {}
 exports.generate = generate
-exports.getAllFileNamesFromDirectory = getAllFileNamesFromDirectory
+//exports.getAllFileNamesFromDirectory = getAllFileNamesFromDirectory
 module.exports = exports

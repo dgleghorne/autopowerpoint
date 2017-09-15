@@ -131,16 +131,45 @@ export default class Index extends React.Component {
                 break;
         }
         var firstlineStrings = []
-        console.log(Utils.getAllFileNamesFromDirectory(directory))
-        var titleArray = firstlineStrings.map(function(string, index) {
-          return {id:index, title: string}
-        })
-        //var temp = [{id:1, title: "test"}, {id:2, title: "test2"}]
-        this.setState({
-          songTypeSelection: typeSelection,
-          songTitleArray: titleArray
-        })
+        this.getAllFileNamesFromDirectory(directory, function(response) {
+            console.log("INSIDE", response)
+          var titleArray = response.data.map(function (object){
+            var rObj = {}
+            rObj = {title: object.firstLine}
+            return rObj
+          })
 
+
+            this.setState({
+              songTypeSelection: typeSelection,
+              songTitleArray: titleArray
+            })
+        });
+        // var titleArray = firstlineStrings.map(function(string, index) {
+        //   return {id:index, title: string}
+        // })
+        //var temp = [{id:1, title: "test"}, {id:2, title: "test2"}]
+
+
+    }
+
+
+
+    getAllFileNamesFromDirectory(directory, callback){
+      let that = this
+      let result = axios.get('/getAllFileNamesFromDirectory', {
+        params:{
+          directory: directory
+        }
+      }).then(function(response){
+        console.log("response", response)
+        callback(response)
+      })
+      .catch(function(error){
+        console.log("error", error);
+        result = []
+      })
+      return result
     }
 
     handleChangeSongTitle(e){
