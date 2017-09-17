@@ -113,6 +113,7 @@ export default class Index extends React.Component {
     }
 
     handleChangeSongType(e){
+      let that = this
         var typeSelection = e.target.value
         //Get song type data
         var directory;
@@ -131,20 +132,25 @@ export default class Index extends React.Component {
                 break;
         }
         var firstlineStrings = []
-        this.getAllFileNamesFromDirectory(directory, function(response) {
-            console.log("INSIDE", response)
-          var titleArray = response.data.map(function (object){
-            var rObj = {}
-            rObj = {title: object.firstLine}
-            return rObj
-          })
-
-
-            this.setState({
-              songTypeSelection: typeSelection,
-              songTitleArray: titleArray
-            })
-        });
+        $.ajax({
+          url: '/getAllFileNamesFromDirectory',
+          data: {
+            directory: directory,
+            type: 'GET',
+            cache: false,
+            success: (data) => {
+              console.log("DATA", data)
+              that.setState({
+                result: data
+              })
+            }
+          }
+        })
+        let titleArray = []
+        this.setState({
+          songTypeSelection: typeSelection,
+          songTitleArray: titleArray
+        })
         // var titleArray = firstlineStrings.map(function(string, index) {
         //   return {id:index, title: string}
         // })
@@ -155,21 +161,23 @@ export default class Index extends React.Component {
 
 
 
-    getAllFileNamesFromDirectory(directory, callback){
+    getAllFileNamesFromDirectory(directory){
       let that = this
-      let result = axios.get('/getAllFileNamesFromDirectory', {
-        params:{
-          directory: directory
-        }
-      }).then(function(response){
-        console.log("response", response)
-        callback(response)
-      })
-      .catch(function(error){
-        console.log("error", error);
-        result = []
-      })
-      return result
+      let result
+      // let result = axios.get('/getAllFileNamesFromDirectory', {
+      //   params:{
+      //     directory: directory
+      //   }
+      // }).then(function(response){
+      //   console.log("response", response)
+      //   callback(response)
+      // })
+      // .catch(function(error){
+      //   console.log("error", error);
+      //   result = []
+      // })
+
+      console.log("RESULT", that.state.result)
     }
 
     handleChangeSongTitle(e){
