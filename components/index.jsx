@@ -30,12 +30,12 @@ export default class Index extends React.Component {
           reading2: "<Insert Bible Reading Here>",
           reader2: "<Insert Reader Here>",
           pageNo2: "<Insert Page No Here>",
-          songs: [],
+          //songs: [],
           slideText: "Any song, my song",
           songTypeSelection: 'na',
-          selectedSongTitle: 'na',
+          selectedSong: 'na',
           selectedSongsArray: [],
-          songTitleArray: [],
+          songArray: [],
           songTypeArray: songTypeArray
         }
     }
@@ -131,67 +131,51 @@ export default class Index extends React.Component {
                 directory = "./public/songs/Other/";
                 break;
         }
-        var firstlineStrings = []
+        let songArray = []
         $.ajax({
           url: '/getAllFileNamesFromDirectory',
-          data: {
             directory: directory,
             type: 'GET',
             cache: false,
             success: (data) => {
               console.log("DATA", data)
+              songArray = data.map((obj, i) => {
+                            obj.id = i
+                            obj.title = obj.firstLine
+                            obj.filename = obj.fileName
+                            return obj;
+                          })
+              console.log(songArray)
               that.setState({
-                result: data
+                songTypeSelection: typeSelection,
+                songArray: songArray
               })
             }
-          }
+
         })
-        let titleArray = []
-        this.setState({
-          songTypeSelection: typeSelection,
-          songTitleArray: titleArray
-        })
-        // var titleArray = firstlineStrings.map(function(string, index) {
-        //   return {id:index, title: string}
-        // })
-        //var temp = [{id:1, title: "test"}, {id:2, title: "test2"}]
 
-
-    }
-
-
-
-    getAllFileNamesFromDirectory(directory){
-      let that = this
-      let result
-      // let result = axios.get('/getAllFileNamesFromDirectory', {
-      //   params:{
-      //     directory: directory
-      //   }
-      // }).then(function(response){
-      //   console.log("response", response)
-      //   callback(response)
-      // })
-      // .catch(function(error){
-      //   console.log("error", error);
-      //   result = []
-      // })
-
-      console.log("RESULT", that.state.result)
     }
 
     handleChangeSongTitle(e){
+      console.log("etv", e.target.value)
       this.setState({
-        selectedSongTitle: e.target.value
+        selectedSong: e.target.value
       })
     }
 
     addSongToList(){
       var songArray = this.state.selectedSongsArray
-      if(songArray.length > this.state.noOfSongs){
+      let length = songArray.length
+      let noOfSongs = this.state.noOfSongs
+      let idNo = length%noOfSongs
+      var song = {id: idNo, name: this.state.selectedSong}
+      if(length > noOfSongs){
         //error message
       }else {
-        songArray.push(this.state.song)
+        songArray.push(song)
+        this.setState({
+          selectedSongsArray: songArray
+        })
       }
     }
 
@@ -366,12 +350,12 @@ export default class Index extends React.Component {
                           </div>
                           <div className="col-md-6">
                             <label htmlFor="songTitleInput">Title</label>
-                            <select className="form-control" id="songTitleInput" value={this.state.selectedSongTitle} onChange={this.handleChangeSongTitle.bind(this)}>
+                            <select className="form-control" id="songTitleInput" value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
                               <option value="na">--Select Song Type First--</option>
                                 {
-                                  this.state.songTitleArray.map(function(song) {
+                                  this.state.songArray.map(function(song) {
                                     return <option key={song.id}
-                                      value={song.title}>{song.title}</option>;
+                                      value={song.filename}>{song.title}</option>;
                                   })
                                 }
                             </select>
