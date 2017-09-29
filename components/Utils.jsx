@@ -4,19 +4,20 @@ var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
 var firstline = require('firstline')
 var axios = require('axios')
 
-function generate(fileName, text){
+function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
 
     // var fileName = "newPPT"
     // var text = "Lots of text...."
 
-    createWelcomeSlide()
+    createWelcomeSlide(date, morning, speaker, title)
     addInterstitial()
     addSong()
     addInterstitial()
-    addBibleReading()
+    addBibleReading(reading1, reader1, pageNo1)
     addInterstitial()
+    addBibleReading(reading2, reader2, pageNo2)
     addCoffee()
 
     // pptx.save('../public/presentations/' + fileName, cb)
@@ -27,13 +28,13 @@ function saveCallback(filename) {
 	 console.log('Good News Everyone!  File created: '+ filename);
 }
 
-function createWelcomeSlide() {
+function createWelcomeSlide(date, morning, speaker, title) {
   var welcomeSlide = pptx.addNewSlide();
   welcomeSlide.addText("Welcome!",{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', font_size:60, font_face:'Century Gothic', color:'000000', fill:'FFFFFF' })
-  welcomeSlide.addText("Sunday 6th August 2017",{ x:5.3, y:0.5, w:'40%', h:'17%', align:'C', font_size:32, font_face:'Century Gothic', color:'00cc00', fill:'FFFFFF', bold: true })
+  welcomeSlide.addText(date,{ x:5.3, y:0.5, w:'40%', h:'17%', align:'C', font_size:32, font_face:'Century Gothic', color:'00cc00', fill:'FFFFFF', bold: true })
   welcomeSlide.addImage({path:'./public/images/churchPic.jpg' , x:0.5 , y:1.5 , w:'48%' , h:'32%'})
-  welcomeSlide.addText("Title Of Service",{ x:0.5, y:3.3, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addText("Speaker's Name",{ x:0.5, y:3.7, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+  welcomeSlide.addText(title,{ x:0.5, y:3.3, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+  welcomeSlide.addText(speaker,{ x:0.5, y:3.7, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
   welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:4.2 , w:'85%' , h:'25%'})
 
   welcomeSlide.bkgd  = 'ffffff';
@@ -51,13 +52,13 @@ function addSong(){
   var slide = pptx.addNewSlide();
 }
 
-function addBibleReading(){
+function addBibleReading(reading, reader, pageNo){
   var slide = pptx.addNewSlide();
   slide.addImage({path:'./public/images/bibleReading.jpg', x:0.0, y:0.0, w:'100%', h: '90%'})
   //slide.addShape(pptx.shapes.RECTANGLE, { x:0.0, y:4.0, w:'100%', h:'30%', fill:{type:'solid', color:'E6E6E6', transparency:'50%'} });
-  slide.addText("Genesis 50:15-20", { x:4.0, y:3.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
-  slide.addText("Reader: Reader Name", { x:4.0, y:4.2, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
-  slide.addText("Page: 1234", { x:4.0, y:4.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText(reading, { x:4.0, y:3.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText("Reader: " + reader, { x:4.0, y:4.2, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText("Page: " + pageNo, { x:4.0, y:4.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
 }
 
 function addCoffee(){

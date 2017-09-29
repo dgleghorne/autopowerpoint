@@ -13,20 +13,24 @@ router.get('/', function(req, res, next) {
 
 router.post('/generatepowerpoint/', function(req, res) {
   var filename = req.body.fileName
-  var text = req.body.slideText
+  var date = req.body.date
+  var morning = req.body.morning
+  var speaker = req.body.speaker
+  var title = req.body.title
+  var reading1 = req.body.reading1
+  var reader1 = req.body.reader1
+  var pageNo1 = req.body.pageNo1
+  var reading2 = req.body.reading2
+  var reader2 = req.body.reader2
+  var pageNo2 = req.body.pageNo2
 
-  Utils.generate(filename, text)
+  Utils.generate(filename, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2)
   // res.send("All is well!")
   //res.render('download', {title: 'Download Powerpoint'})
   res.send(filename)
   res.end()
 })
 
-// router.post('/downloadpowerpoint/', function(req, res){
-//   var filename = req.body.fileName
-//   res.download('./public/presentations/' + filename + '.pptx')
-//   res.end()
-// })
 
 router.get('/downloadpowerpoint/', function(req, res) {
   var filename = req.body.fileName
@@ -57,7 +61,6 @@ router.get('/getAllFileNamesFromDirectory/', function(req, res) {
   // var directory = req.body.directory
   var directory = "./public/songs/IPH/"
   var arrayOfFileObjects = []
-  //fs.readdirSync(directory, (err, files) => {
   var files = fs.readdirSync(directory)
 
   files.forEach(file => {
@@ -65,60 +68,17 @@ router.get('/getAllFileNamesFromDirectory/', function(req, res) {
     var content = fs.readFileSync(directory + file)
     arrayOfFileObjects.push({
       filename: file,
-      firstLine: content.toString().split('\n')[0]
+      title: content.toString().split('\n')[0],
+      firstLine: content.toString().split('\n')[1]
     })
 
   });
   console.log(arrayOfFileObjects);
   //return arrayOfFileObjects
 
-  // var fileNameArray = []
-  // fs.readdir(directory, (err, files) => {
-  //   files.forEach(file => {
-  //     console.log(file);
-  //     fileNameArray.push(file)
-  //   });
-  //   return fileNameArray
-  // })
   res.send(arrayOfFileObjects)
 })
 
-const testFolder = './textFiles/';
-//const fs = require('fs');
-
-
-
-// function(result) {
-//     var options = {
-//         root: __dirname + '/../public/presentations/',
-//         dotfiles: 'deny',
-//         headers: {
-//             'x-timestamp': Date.now(),
-//             'x-sent': true,
-//             'Content-Disposition': 'attachment; filename="' + filename + '"'
-//         }
-//     };
-//     // res.render('index', {title: 'created'})
-//     // res.sendFile(filename, options, function(err) {
-//     //     if (err) {
-//     //         console.log(err);
-//     //         res.render('error', {title: err.status});
-//     //     }
-//     // })
-// }
-
-// function streamCallback(data) {
-//    var strFilename = filename;
-//
-// 	res.writeHead(200, { 'Content-disposition':'attachment;filename='+strFilename, 'Content-Length':data.length });
-// 	res.end(new Buffer(data, 'binary'));
-// }
-
-
-// Utils.create(filename, text,
-//   function(result){
-//     res.send('POST request to the homepage')
-//   }
-// )
+//const testFolder = './textFiles/';
 
 module.exports = router;

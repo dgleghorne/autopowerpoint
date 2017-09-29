@@ -4,6 +4,10 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import axios from 'axios'
 import Utils from './Utils.jsx'
+import Datepanel from './datepanel.jsx'
+import Titlepanel from './titlepanel.jsx'
+import Readingspanel from './readingspanel.jsx'
+import Songspanel from './songspanel.jsx'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 const FileDownload = require('react-file-download');
 
@@ -12,11 +16,6 @@ export default class Index extends React.Component {
         super(props);
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
-
-        var songTypeArray = [
-          {id: 1, type:"IPH"}, {id: 2, type:"Psalms"}, {id: 3, type:"Paraphrases"}, {id: 4, type:"Other"}
-        ]
-
         this.state = {
           fileName: "myPowerpointII",
           date: today,
@@ -31,159 +30,90 @@ export default class Index extends React.Component {
           reader2: "<Insert Reader Here>",
           pageNo2: "<Insert Page No Here>",
           //songs: [],
-          slideText: "Any song, my song",
-          songTypeSelection: 'na',
-          selectedSong: 'na',
-          selectedSongsArray: [],
-          songArray: [],
-          songTypeArray: songTypeArray
+          slideText: "Any song, my song"
         }
     }
 
-    // componentDidMount(){
-    //   $(function () {
-    //     $('#datetimepicker1').datetimepicker();
-    //   });
-    // }
-
-    handleChangeDate(e){
+    handleChangeDateParent(date){
       this.setState({
-        date: e.target.value
+        date: date
       })
     }
 
-    handleChangeSpeaker(e){
+    handleChangeSpeakerParent(speaker){
       this.setState({
-        speaker: e.target.value
+        speaker: speaker
       })
     }
 
-    handleChangeTitle(e){
+    handleChangeTitleParent(title){
       this.setState({
-        title: e.target.value
+        title: title
       })
     }
 
-    handleChangeMorning(e){
+    handleChangeMorningParent(morning){
       this.setState({
-        morning: e.target.value
+        morning: morning
       })
     }
 
-    handleChangeNoOfSongs(e){
+    handleChangeNoOfSongsParent(number){
       this.setState({
-        noOfSongs: e.target.value
+        noOfSongs: number
       })
     }
 
-    handleChangeReading1(e){
+    handleChangeReading1Parent(value){
       this.setState({
-        reading1: e.target.value
+        reading1: value
       })
     }
 
-    handleChangeReader1(e){
+    handleChangeReader1Parent(value){
       this.setState({
-        reader1: e.target.value
+        reader1: value
       })
     }
 
-    handleChangePageNo1(e){
+    handleChangePageNo1Parent(value){
       this.setState({
-        pageNo1: e.target.value
+        pageNo1: value
       })
     }
 
-    handleChangeReading2(e){
+    handleChangeReading2Parent(value){
       this.setState({
-        reading2: e.target.value
+        reading2: value
       })
     }
 
-    handleChangeReader2(e){
+    handleChangeReader2Parent(value){
       this.setState({
-        reader2: e.target.value
+        reader2: value
       })
     }
 
-    handleChangePageNo2(e){
+    handleChangePageNo2Parent(value){
       this.setState({
-        pageNo2: e.target.value
+        pageNo2: value
       })
     }
-
-    handleChangeSongType(e){
-      let that = this
-        var typeSelection = e.target.value
-        //Get song type data
-        var directory;
-        switch (typeSelection) {
-            case 'IPH':
-                directory = "./public/songs/IPH/";
-                break;
-            case 'Psalms':
-                directory = "./public/songs/Psalms/";
-                break;
-            case "Paraphrases":
-                directory = "./public/songs/Paraphrases/";
-                break;
-            case "Other":
-                directory = "./public/songs/Other/";
-                break;
-        }
-        let songArray = []
-        $.ajax({
-          url: '/getAllFileNamesFromDirectory',
-            directory: directory,
-            type: 'GET',
-            cache: false,
-            success: (data) => {
-              console.log("DATA", data)
-              songArray = data.map((obj, i) => {
-                            obj.id = i
-                            obj.title = obj.firstLine
-                            obj.filename = obj.fileName
-                            return obj;
-                          })
-              console.log(songArray)
-              that.setState({
-                songTypeSelection: typeSelection,
-                songArray: songArray
-              })
-            }
-
-        })
-
-    }
-
-    handleChangeSongTitle(e){
-      console.log("etv", e.target.value)
-      this.setState({
-        selectedSong: e.target.value
-      })
-    }
-
-    addSongToList(){
-      var songArray = this.state.selectedSongsArray
-      let length = songArray.length
-      let noOfSongs = this.state.noOfSongs
-      let idNo = length%noOfSongs
-      var song = {id: idNo, name: this.state.selectedSong}
-      if(length > noOfSongs){
-        //error message
-      }else {
-        songArray.push(song)
-        this.setState({
-          selectedSongsArray: songArray
-        })
-      }
-    }
-
     generatePowerpoint(){
       let that = this
       axios.post('/generatePowerpoint', {
         fileName: this.state.fileName,
-        slideText: this.state.slideText
+        date: this.state.date,
+        speaker: this.state.speaker,
+        title: this.state.title,
+        morning: this.state.morning,
+        noOfSongs: this.state.noOfSongs,
+        reading1: this.state.reading1,
+        reader1: this.state.reader1,
+        pageNo1: this.state.pageNo1,
+        reading2: this.state.reading1,
+        reader2: this.state.reader2,
+        pageNo2: this.state.pageNo2,
       }).then(function(response){
         console.log(response);
       })
@@ -215,168 +145,26 @@ export default class Index extends React.Component {
       this.downloadPowerpoint()
     }
 
-    editButtonFormatter(cell, row){
-      return '<button type="button" class="btn btn-danger">Remove <span class="glyphicon glyphicon-trash"></span></button>'
-    }
-
-
-    //var rows = [{id:1, name: "Name"}, {id:2, name: "Nom"}]
-
     render() {
-      var rows = this.state.selectedSongsArray
         return (
             <div className="container-fluid">
               <div className="row">
                 <h2>Create Powerpoint</h2>
               </div>
-              <div className="row">
-                  <div className="panel panel-primary">
-                    <div className="panel-heading">
-                      <h3 className="panel-title">Date</h3>
-                    </div>
-                    <div className="panel-body">
-                      <div className="col-md-4">
-                        <label htmlFor="dateInput">Date</label>
-                        <div className='input-group date' id="datetimepicker1">
-                          <input type='text'className="form-control" id="dateInput" value={this.state.date} onChange={this.handleChangeDate.bind(this)}></input>
-                          <div className="input-group-addon">
-                            <span className="glyphicon glyphicon-calendar"></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className= "row">
-                          <label htmlFor="morningInput">AM/PM</label>
-                            <div className="radio" id="morningInput">
-                              <label><input type="radio" name="optradio"></input>AM</label>
-                              <span>  </span>
-                              <label><input type="radio" name="optradio"></input>PM</label>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="row">
+                  <Datepanel handleChangeDateParent={this.handleChangeDateParent.bind(this)} handleChangeMorningParent={this.handleChangeMorningParent.bind(this)} today={this.state.date}/>
                 </div>
 
                 <div className="row">
-                  <div className="panel panel-primary">
-                    <div className="panel-heading">
-                      <h3 className="panel-title">Title</h3>
-                    </div>
-                      <div className="panel-body">
-                        <div className="col-md-4">
-                          <label htmlFor="speakerInput">Speaker</label>
-                          <input type='text'className="form-control" id="speakerInput" onChange={this.handleChangeSpeaker.bind(this)}></input>
-                        </div>
-                        <div className="col-md-4">
-                          <label htmlFor="titleInput">Title</label>
-                          <input type='text'className="form-control" id="titleInput" onChange={this.handleChangeTitle.bind(this)}></input>
-                        </div>
-                      </div>
-                  </div>
+                  <Titlepanel handleChangeSpeakerParent={this.handleChangeSpeakerParent.bind(this)} handleChangeTitleParent={this.handleChangeTitleParent.bind(this)}/>
                 </div>
 
                 <div className="row">
-                  <div className="panel panel-primary">
-                    <div className="panel-heading">
-                      <h3 className="panel-title">Readings</h3>
-                    </div>
-                      <div className="panel-body">
-                        <div className= "row">
-                          <div className="col-md-4">
-                            <label htmlFor="reading1Input">Reading 1</label>
-                            <input type='text'className="form-control" id="reading1Input" onChange={this.handleChangeReading1.bind(this)}></input>
-                          </div>
-                          <div className="col-md-4">
-                            <label htmlFor="reader1Input">Reader 1</label>
-                            <input type='text'className="form-control" id="reader1Input" onChange={this.handleChangeReader1.bind(this)}></input>
-                          </div>
-                          <div className="col-md-4">
-                            <label htmlFor="pageNo1Input">Reading 1 Page Number</label>
-                            <input type='text'className="form-control" id="pageNo1Input" onChange={this.handleChangePageNo1.bind(this)}></input>
-                          </div>
-                        </div>
-                        <br/>
-                        <div className= "row">
-                          <div className="col-md-4">
-                            <label htmlFor="reading2Input">Reading 2</label>
-                            <input type='text'className="form-control" id="reading2Input" onChange={this.handleChangeReading2.bind(this)}></input>
-                          </div>
-                          <div className="col-md-4">
-                            <label htmlFor="reader2Input">Reader 2</label>
-                            <input type='text'className="form-control" id="reader2Input" onChange={this.handleChangeReader2.bind(this)}></input>
-                          </div>
-                          <div className="col-md-4">
-                            <label htmlFor="pageNo2Input">Reading 2 Page Number</label>
-                            <input type='text'className="form-control" id="pageNo2Input" onChange={this.handleChangePageNo2.bind(this)}></input>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
+                  <Readingspanel handleChangeReader1Parent={this.handleChangeReader1Parent.bind(this)} handleChangeReading1Parent={this.handleChangeReading1Parent.bind(this)} handleChangePageNo1Parent={this.handleChangePageNo1Parent.bind(this)} handleChangeReader2Parent={this.handleChangeReader2Parent.bind(this)} handleChangeReading2Parent={this.handleChangeReading2Parent.bind(this)} handleChangePageNo2Parent={this.handleChangePageNo2Parent.bind(this)}/>
                 </div>
 
                 <div className="row">
-                  <div className="panel panel-primary">
-                    <div className="panel-heading">
-                      <h3 className="panel-title">Songs</h3>
-                    </div>
-                      <div className="panel-body">
-                        <div className="row">
-                          <div className="col-md-4">
-                            <label htmlFor="noOfSongsInput">Number of Songs</label>
-                            <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                            </select>
-                          </div>
-                          <div className="col-md-3">
-                            <label htmlFor="addNewSong"></label>
-                            <button type="submit" className="btn btn-primary btn-block" id="addNewSong" onClick={this.addSongToList.bind(this)}>Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
-                          </div>
-                        </div>
-                      <br/>
-                        <div className="row">
-                          <div className="col-md-3">
-                            <label htmlFor="songTypeInput">Type</label>
-                            <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
-                              <option value="na">--Please select song type--</option>
-                                {
-                                  this.state.songTypeArray.map(function(song) {
-                                    return <option key={song.id}
-                                      value={song.type}>{song.type}</option>;
-                                  })
-                                }
-                            </select>
-                          </div>
-                          <div className="col-md-6">
-                            <label htmlFor="songTitleInput">Title</label>
-                            <select className="form-control" id="songTitleInput" value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
-                              <option value="na">--Select Song Type First--</option>
-                                {
-                                  this.state.songArray.map(function(song) {
-                                    return <option key={song.id}
-                                      value={song.filename}>{song.title}</option>;
-                                  })
-                                }
-                            </select>
-                          </div>
-                          <div className="col-md-3">
-                            <label htmlFor="addSong"></label>
-                            <button type="submit" className="btn btn-success btn-block" id="addSong" onClick={this.addSongToList.bind(this)}>Add to presentation <span className="glyphicon glyphicon-plus-sign"></span></button>
-                          </div>
-                        </div>
-                        <br/>
-                        <div className="row">
-                          <div className="col-md-12">
-                            <BootstrapTable data={rows} striped hover>
-                              <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
-                              <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
-                              <TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>
-                            </BootstrapTable>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
+                  <Songspanel handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.state.noOfSongs}/>
                 </div>
               <br/>
               <div className="row">
