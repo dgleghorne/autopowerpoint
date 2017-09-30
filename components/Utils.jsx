@@ -1,10 +1,9 @@
 'use strict'
 
 var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
-var firstline = require('firstline')
 var axios = require('axios')
 
-function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2){
+function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
 
@@ -13,7 +12,7 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
 
     createWelcomeSlide(date, morning, speaker, title)
     addInterstitial()
-    addSong()
+    addSong(songsArray[0])
     addInterstitial()
     addBibleReading(reading1, reader1, pageNo1)
     addInterstitial()
@@ -48,8 +47,11 @@ function addInterstitial(){
   slide.addImage({path:'./public/images/blueCrossBackground.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
 }
 
-function addSong(){
-  var slide = pptx.addNewSlide();
+function addSong(songObject){
+  let songName = songObject.name
+  var songNameSlide = pptx.addNewSlide();
+  songNameSlide.addText(songName,{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', font_size:60, font_face:'Century Gothic', color:'000000', fill:'FFFFFF' })
+  var dividedSongArray = getSongContent()
 }
 
 function addBibleReading(reading, reader, pageNo){
@@ -73,19 +75,10 @@ function addCoffee(){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', font_size: 32, font_face:'Arial', color: '000000', bold: true})
 }
 
+function getSongContent(directory, filename){
 
-
-function getAllFirstLinesFromDirectory(directory){
-  var fileNameArray = getAllFileNamesFromDirectory(directory)
-  return fileNameArray
-  // var firstLineArray = []
-  // fileNameArray.forEach(file => {
-  //   firstLineArray = firstline(file)
-  // })
-  // return firstLineArray
 }
 
 var exports = {}
 exports.generate = generate
-//exports.getAllFileNamesFromDirectory = getAllFileNamesFromDirectory
 module.exports = exports

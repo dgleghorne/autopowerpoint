@@ -23,8 +23,9 @@ router.post('/generatepowerpoint/', function(req, res) {
   var reading2 = req.body.reading2
   var reader2 = req.body.reader2
   var pageNo2 = req.body.pageNo2
+  var songsArray = JSON.parse(req.body.songsArray)
 
-  Utils.generate(filename, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2)
+  Utils.generate(filename, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray)
   // res.send("All is well!")
   //res.render('download', {title: 'Download Powerpoint'})
   res.send(filename)
@@ -77,6 +78,14 @@ router.get('/getAllFileNamesFromDirectory/', function(req, res) {
   //return arrayOfFileObjects
 
   res.send(arrayOfFileObjects)
+})
+
+router.get('/getAllContentFromFile/', function(req, res){
+  var directory = './public/songs/IPH/'
+  var file = req.body.filename
+  var content = fs.readFileSync(directory + file)
+
+  res.send(content.toString())
 })
 
 //const testFolder = './textFiles/';

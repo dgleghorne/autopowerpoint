@@ -38,6 +38,7 @@ export default class Songspanel extends React.Component {
           selectedSongsArray: songArray,
           idNo: idNo++
         })
+        this.props.handleChangeSelectedSongsArrayParent(this.state.selectedSongsArray)
       }
     }
 

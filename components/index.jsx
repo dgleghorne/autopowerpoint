@@ -29,8 +29,7 @@ export default class Index extends React.Component {
           reading2: "<Insert Bible Reading Here>",
           reader2: "<Insert Reader Here>",
           pageNo2: "<Insert Page No Here>",
-          //songs: [],
-          slideText: "Any song, my song"
+          selectedSongsArray: []
         }
     }
 
@@ -99,6 +98,13 @@ export default class Index extends React.Component {
         pageNo2: value
       })
     }
+
+    handleChangeSelectedSongsArrayParent(selectedSongsArray){
+      this.setState({
+        selectedSongsArray: selectedSongsArray
+      })
+    }
+
     generatePowerpoint(){
       let that = this
       axios.post('/generatePowerpoint', {
@@ -114,6 +120,7 @@ export default class Index extends React.Component {
         reading2: this.state.reading1,
         reader2: this.state.reader2,
         pageNo2: this.state.pageNo2,
+        songsArray: JSON.stringify(this.state.selectedSongsArray)
       }).then(function(response){
         console.log(response);
       })
@@ -164,7 +171,7 @@ export default class Index extends React.Component {
                 </div>
 
                 <div className="row">
-                  <Songspanel handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.state.noOfSongs}/>
+                  <Songspanel handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.state.noOfSongs} handleChangeSelectedSongsArrayParent={this.handleChangeSelectedSongsArrayParent.bind(this)}/>
                 </div>
               <br/>
               <div className="row">

@@ -42,6 +42,7 @@
     "bootstrap-datepicker": "^1.7.1",
     "chai": "^4.0.2",
     "enzyme": "^2.9.1",
+    "jQuery": "^1.7.4",
     "json-loader": "^0.5.7",
     "mocha": "^3.4.2",
     "sinon": "^2.3.6",
