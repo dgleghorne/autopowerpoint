@@ -29,7 +29,7 @@ export default class Songspanel extends React.Component {
       let idNo = this.state.idNo
       idNo++
       let selectedSong = JSON.parse(this.state.selectedSong)
-      var song = {id: idNo, name: selectedSong.title, filename: selectedSong.filename}
+      var song = {id: idNo, name: selectedSong.title, filename: selectedSong.filename, content: selectedSong.content}
       if(length >= noOfSongs){
         //error message
       }else {
@@ -73,6 +73,7 @@ export default class Songspanel extends React.Component {
                             obj.id = i
                             obj.title = obj.title + " - " + obj.firstLine
                             obj.filename = obj.filename
+                            obj.content = obj.content
                             return obj;
                           })
               console.log(songArray)

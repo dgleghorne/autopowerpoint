@@ -16,7 +16,14 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     addInterstitial()
     addBibleReading(reading1, reader1, pageNo1)
     addInterstitial()
+    addSong(songsArray[1])
+    addInterstitial()
+    addSong(songsArray[2])
+    addInterstitial()
     addBibleReading(reading2, reader2, pageNo2)
+    addInterstitial()
+    addSong(songsArray[3])
+    addInterstitial()
     addCoffee()
 
     // pptx.save('../public/presentations/' + fileName, cb)
@@ -48,10 +55,11 @@ function addInterstitial(){
 }
 
 function addSong(songObject){
-  let songName = songObject.name
+  let songNameSplit = songObject.name.split('-')
+  let songName = '\t\t' + songNameSplit[0] + '\n\t' + songNameSplit[1]
   var songNameSlide = pptx.addNewSlide();
-  songNameSlide.addText(songName,{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', font_size:60, font_face:'Century Gothic', color:'000000', fill:'FFFFFF' })
-  var dividedSongArray = getSongContent()
+  songNameSlide.addText(songName,{ x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080'})
+  divideSongContentIntoSlides(songObject.content)
 }
 
 function addBibleReading(reading, reader, pageNo){
@@ -75,8 +83,26 @@ function addCoffee(){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', font_size: 32, font_face:'Arial', color: '000000', bold: true})
 }
 
-function getSongContent(directory, filename){
-
+function divideSongContentIntoSlides(content){
+  var lines = content.replace('\f', '').replace('\r', '').split('\n');
+  console.log(lines)
+  var segments = []
+  for (var i = 2; i < lines.length ; i=i+2) {
+    segments.push(lines[i] + '\n' + lines[i+1])
+  }
+  console.log(segments)
+  for(var i = 0; i < segments.length-2; i++){
+    var segment = segments[i].replace('\f', '').replace('\r', '')
+    if(!(segment == '\nundefined')){
+      var slide = pptx.addNewSlide();
+      if(i == segments.length-3){
+        slide.addText(segment, { x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080'})
+        slide.addText(segments[i+1], { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080' })
+      } else{
+        slide.addText(segment, { x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080' })
+      }
+    }
+  }
 }
 
 var exports = {}

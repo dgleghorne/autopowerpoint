@@ -33,8 +33,8 @@ router.post('/generatepowerpoint/', function(req, res) {
 })
 
 
-router.get('/downloadpowerpoint/', function(req, res) {
-  var filename = req.body.fileName
+router.get('/downloadpowerpoint/:filename', function(req, res) {
+  var filename = req.params.filename
   var path = './public/presentations/' + filename
   res.send(filename)
   // res.setHeader('Content-Disposition', 'attachment; filename=' + ' ' + filename)
@@ -70,7 +70,8 @@ router.get('/getAllFileNamesFromDirectory/', function(req, res) {
     arrayOfFileObjects.push({
       filename: file,
       title: content.toString().split('\n')[0],
-      firstLine: content.toString().split('\n')[1]
+      firstLine: content.toString().split('\n')[1],
+      content: content.toString()
     })
 
   });

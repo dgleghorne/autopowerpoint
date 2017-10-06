@@ -9,7 +9,8 @@ import Titlepanel from './titlepanel.jsx'
 import Readingspanel from './readingspanel.jsx'
 import Songspanel from './songspanel.jsx'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-const FileDownload = require('react-file-download');
+const FileDownload = require('js-file-download');
+const downloader = require('file-downloader')
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -29,7 +30,9 @@ export default class Index extends React.Component {
           reading2: "<Insert Bible Reading Here>",
           reader2: "<Insert Reader Here>",
           pageNo2: "<Insert Page No Here>",
-          selectedSongsArray: []
+          selectedSongsArray: [],
+          errorMsg: "",
+          errorStyle: ""
         }
     }
 
@@ -132,24 +135,54 @@ export default class Index extends React.Component {
     downloadPowerpoint(){
       var that = this
       var filename = that.state.fileName + '.pptx'
-      axios.get('/downloadpowerpoint', {
-        params:{
-          fileName: filename
-        }
-      }).then(function(response){
-        console.log(response);
-        console.log(filename);
-        FileDownload(response.data, filename);
-      })
-      .catch(function(error){
-        console.log(error);
-        console.log(filename);
-      })
+
+      downloader.get('./public/presentations/' + filename, filename)
+      .then(function (filename) {
+        console.log("File " + filename + " has been downloaded!");
+      });
+
+      // $.ajax({
+      //   url: '/downloadpowerpoint/' + filename,
+      //   type: 'GET',
+      //   cache: false,
+      //   success: (data) => {
+      //     console.log(data);
+      //     console.log(filename);
+      //     FileDownload(data, filename);
+      //   },
+      //   error: (err) => {
+      //     console.log(error);
+      //     console.log(filename);
+      //   }
+      // })
+
+    //   axios.get('/downloadpowerpoint/', {
+    //     params:{
+    //       filename: filename
+    //     }
+    //   }).then(function(response){
+    //     console.log(response);
+    //     console.log(filename);
+    //     FileDownload(response.data, filename);
+    //   })
+    //   .catch(function(error){
+    //     console.log(error);
+    //     console.log(filename);
+    //   })
     }
 
     returnPowerpoint(){
-      this.generatePowerpoint()
-      this.downloadPowerpoint()
+      console.log(this.state.selectedSongsArray.length)
+      console.log(this.state.noOfSongs)
+      if(this.state.selectedSongsArray.length < this.state.noOfSongs){
+        this.setState({
+          errorMsg: "Error: You have not selected enough songs.  Please try again",
+          errorStyle: "alert alert-danger"
+        })
+      } else{
+        this.generatePowerpoint()
+        this.downloadPowerpoint()
+      }
     }
 
     render() {
@@ -179,6 +212,11 @@ export default class Index extends React.Component {
                   <div className="creationForm">
                       <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.returnPowerpoint.bind(this)}>Generate</button>
                   </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <h3 className={this.state.errorStyle} role="alert">{this.state.errorMsg}</h3>
                 </div>
               </div>
             </div>
