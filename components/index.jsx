@@ -220,7 +220,7 @@ export default class Index extends React.Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <a href={"/download/" + this.state.filename}>Download link</a>
+                  <a href={"/download/" + this.state.filename}>Download Powerpoint Here</a>
                 </div>
               </div>
             </div>
