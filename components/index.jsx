@@ -18,7 +18,7 @@ export default class Index extends React.Component {
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
         this.state = {
-          fileName: "Powerpoint " + today + '.pptx',
+          fileName: "Powerpoint " + today ,
           date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
@@ -111,7 +111,7 @@ export default class Index extends React.Component {
     generatePowerpoint(){
       let that = this
       axios.post('/generatePowerpoint', {
-        fileName: this.state.fileName,
+        fileName: this.state.fileName + '.pptx',
         date: this.state.date,
         speaker: this.state.speaker,
         title: this.state.title,
@@ -220,7 +220,7 @@ export default class Index extends React.Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <a href="/download/myPowerpointII">Download link</a>
+                  <a href={"/download/" + this.state.filename}>Download link</a>
                 </div>
               </div>
             </div>
