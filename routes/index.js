@@ -33,34 +33,34 @@ router.post('/generatepowerpoint/', function(req, res) {
 })
 
 
-router.get('/downloadpowerpoint/:filename', function(req, res) {
-  var filename = req.params.filename
-  var path = './public/presentations/' + filename
-  res.send(filename)
-  // res.setHeader('Content-Disposition', 'attachment; filename=' + ' ' + filename)
-  res.download(path)
-  // var options = {
-  //         root: __dirname + '/../public/presentations/',
-  //         dotfiles: 'deny',
-  //         headers: {
-  //             'x-timestamp': Date.now(),
-  //             'x-sent': true,
-  //             'Content-Disposition': 'attachment; filename="' + filename + '"'
-  //           }
-  //   }
-  //   var path = 'myPowerpoint7.pptx'
-  // res.sendFile(path, options, function(err) {
-  //       if (err) {
-  //              console.log(err);
-  //              res.render('error', {title: err.status});
-  //          }
-  // })
+// router.get('/downloadpowerpoint/:filename', function(req, res) {
+//   var filename = req.params.filename
+//   var path = './public/presentations/' + filename
+//   res.send(filename)
+//   // res.setHeader('Content-Disposition', 'attachment; filename=' + ' ' + filename)
+//   res.download(path)
+//   // var options = {
+//   //         root: __dirname + '/../public/presentations/',
+//   //         dotfiles: 'deny',
+//   //         headers: {
+//   //             'x-timestamp': Date.now(),
+//   //             'x-sent': true,
+//   //             'Content-Disposition': 'attachment; filename="' + filename + '"'
+//   //           }
+//   //   }
+//   //   var path = 'myPowerpoint7.pptx'
+//   // res.sendFile(path, options, function(err) {
+//   //       if (err) {
+//   //              console.log(err);
+//   //              res.render('error', {title: err.status});
+//   //          }
+//   // })
+//
+// })
 
-})
-
-router.get('/getAllFileNamesFromDirectory/', function(req, res) {
-  // var directory = req.body.directory
-  var directory = "./public/songs/IPH/"
+router.get('/getAllFileNamesFromDirectory/:directory', function(req, res) {
+  var param = req.params.directory
+  var directory = "./public/songs/" + param + '/'
   var arrayOfFileObjects = []
   var files = fs.readdirSync(directory)
 
@@ -88,6 +88,12 @@ router.get('/getAllContentFromFile/', function(req, res){
 
   res.send(content.toString())
 })
+
+router.get('/download/:filename', function(req, res){
+  var filename = req.params.filename
+  var file = './public/presentations/' + filename + '.pptx';
+  res.download(file); // Set disposition and send it.
+});
 
 //const testFolder = './textFiles/';
 

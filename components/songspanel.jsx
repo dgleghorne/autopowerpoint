@@ -49,22 +49,23 @@ export default class Songspanel extends React.Component {
         var directory;
         switch (typeSelection) {
             case 'IPH':
-                directory = "./public/songs/IPH/";
+                //directory = "./public/songs/IPH/";
+                directory ='IPH'
                 break;
             case 'Psalms':
-                directory = "./public/songs/Psalms/";
+                directory = "Psalms";
                 break;
             case "Paraphrases":
-                directory = "./public/songs/Paraphrases/";
+                directory = "Paraphrases";
                 break;
             case "Other":
-                directory = "./public/songs/Other/";
+                directory = "Other";
                 break;
         }
         let songArray = []
         $.ajax({
-          url: '/getAllFileNamesFromDirectory',
-            directory: directory,
+          url: '/getAllFileNamesFromDirectory/' + directory,
+            //directory: directory,
             type: 'GET',
             cache: false,
             success: (data) => {

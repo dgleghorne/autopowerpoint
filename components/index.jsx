@@ -18,7 +18,7 @@ export default class Index extends React.Component {
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
         this.state = {
-          fileName: "myPowerpointII",
+          fileName: "Powerpoint " + today + '.pptx',
           date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
@@ -134,41 +134,40 @@ export default class Index extends React.Component {
 
     downloadPowerpoint(){
       var that = this
-      var filename = that.state.fileName + '.pptx'
+      var filename = that.state.fileName
 
-      downloader.get('./public/presentations/' + filename, filename)
-      .then(function (filename) {
-        console.log("File " + filename + " has been downloaded!");
-      });
+      // downloader.get('./public/presentations/' + filename, filename)
+      // .then(function (filename) {
+      //   console.log("File " + filename + " has been downloaded!");
+      // });
 
-      // $.ajax({
-      //   url: '/downloadpowerpoint/' + filename,
-      //   type: 'GET',
-      //   cache: false,
-      //   success: (data) => {
-      //     console.log(data);
-      //     console.log(filename);
-      //     FileDownload(data, filename);
-      //   },
-      //   error: (err) => {
-      //     console.log(error);
-      //     console.log(filename);
+      $.ajax({
+        url: '/download/' + filename,
+        type: 'GET',
+        cache: false,
+        success: (data) => {
+          console.log(data);
+          console.log(filename);
+        },
+        error: (err) => {
+          console.log(error);
+          console.log(filename);
+        }
+      })
+
+      // axios.get('/downloadpowerpoint/', {
+      //   params:{
+      //     filename: filename
       //   }
+      // }).then(function(response){
+      //   console.log(response);
+      //   console.log(filename);
+      //   FileDownload(response.data, filename);
       // })
-
-    //   axios.get('/downloadpowerpoint/', {
-    //     params:{
-    //       filename: filename
-    //     }
-    //   }).then(function(response){
-    //     console.log(response);
-    //     console.log(filename);
-    //     FileDownload(response.data, filename);
-    //   })
-    //   .catch(function(error){
-    //     console.log(error);
-    //     console.log(filename);
-    //   })
+      // .catch(function(error){
+      //   console.log(error);
+      //   console.log(filename);
+      // })
     }
 
     returnPowerpoint(){
@@ -181,7 +180,7 @@ export default class Index extends React.Component {
         })
       } else{
         this.generatePowerpoint()
-        this.downloadPowerpoint()
+        //this.downloadPowerpoint()
       }
     }
 
@@ -217,6 +216,11 @@ export default class Index extends React.Component {
               <div className="row">
                 <div className="col-md-12">
                   <h3 className={this.state.errorStyle} role="alert">{this.state.errorMsg}</h3>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <a href="/download/myPowerpointII">Download link</a>
                 </div>
               </div>
             </div>
