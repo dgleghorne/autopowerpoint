@@ -9,6 +9,7 @@
     "build_listen": "./node_modules/.bin/webpack -d --watch"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "body-parser": "~1.17.1",
     "bootstrap": "^3.3.7",
     "cookie-parser": "~1.4.3",
