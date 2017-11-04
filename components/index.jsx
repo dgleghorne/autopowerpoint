@@ -17,6 +17,7 @@ export default class Index extends React.Component {
         super(props);
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
+
         this.state = {
           fileName: "Powerpoint " + today ,
           date: today,
@@ -32,7 +33,8 @@ export default class Index extends React.Component {
           pageNo2: "<Insert Page No Here>",
           selectedSongsArray: [],
           errorMsg: "",
-          errorStyle: ""
+          errorStyle: "",
+          downloadMessage: false
         }
     }
 
@@ -180,11 +182,19 @@ export default class Index extends React.Component {
         })
       } else{
         this.generatePowerpoint()
+        this.setState({
+          downloadMessage: true
+        })
         //this.downloadPowerpoint()
       }
     }
 
     render() {
+      let downloadLink = null
+      if(this.state.downloadMessage){
+        downloadLink = <h3 className="alert alert-success" role="alert">Powerpoint has been generated.  <a href={"/download/" + this.state.fileName}>Download Powerpoint Here</a></h3>
+      }
+
         return (
             <div className="container-fluid">
               <div className="row">
@@ -220,7 +230,7 @@ export default class Index extends React.Component {
               </div>
               <div className="row">
                 <div className="col-md-12">
-                  <a href={"/download/" + this.state.filename}>Download Powerpoint Here</a>
+                  {downloadLink}
                 </div>
               </div>
             </div>
