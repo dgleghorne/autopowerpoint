@@ -85,7 +85,7 @@ function addCoffee(){
 }
 
 function divideSongContentIntoSlides(content){
-  var lines = content.replace('\f', '').replace('\r', '').split('\n');
+  var lines = content.replace('\f', '').replace('\r', '').replace(/ +(?= )/g,'').split('\n');
   console.log(lines)
   var segments = []
   for (var i = 2; i < lines.length ; i=i+2) {

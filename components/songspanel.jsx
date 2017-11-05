@@ -106,6 +106,10 @@ export default class Songspanel extends React.Component {
       return <button type="button" className="btn btn-danger" >Remove <span className="glyphicon glyphicon-trash"></span></button>
     }
 
+    compareSongs(a, b){
+      return a.title.replace('IPH ', '').split('-')[0] - b.title.replace('IPH ', '').split('-')[0]
+    }
+
     render() {
       var rows = this.state.selectedSongsArray
       return(
@@ -122,10 +126,10 @@ export default class Songspanel extends React.Component {
                     <option value="5">5</option>
                   </select>
                 </div>
-                <div className="col-md-3">
+                {/*<div className="col-md-3">
                   <label htmlFor="addNewSong"></label>
                   <button type="submit" className="btn btn-primary btn-block" id="addNewSong" onClick={this.addSongToList.bind(this)}>Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
-                </div>
+                </div>*/}
               </div>
             <br/>
               <div className="row">
@@ -146,7 +150,7 @@ export default class Songspanel extends React.Component {
                   <select className="form-control" id="songTitleInput" value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
                     <option value="na">--Select Song Type First--</option>
                       {
-                        this.state.songArray.map(function(song) {
+                        this.state.songArray.sort(this.compareSongs).map(function(song) {
                           return <option key={song.id}
                             value={JSON.stringify(song)}>{song.title}</option>;
                         })
