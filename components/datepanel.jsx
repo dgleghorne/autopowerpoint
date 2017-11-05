@@ -25,6 +25,17 @@ export default class Datepanel extends React.Component {
       this.props.handleChangeMorningParent(e.target.value)
     }
 
+    // <div className="col-md-4">
+    //   <div className= "row">
+    //     <label htmlFor="morningInput">AM/PM</label>
+    //       <div className="radio" id="morningInput">
+    //         <label><input type="radio" name="optradio"></input>AM</label>
+    //         <span>  </span>
+    //         <label><input type="radio" name="optradio"></input>PM</label>
+    //       </div>
+    //   </div>
+    // </div>
+
     render() {
       return(
         <div className="panel panel-primary">
@@ -39,16 +50,6 @@ export default class Datepanel extends React.Component {
                 <div className="input-group-addon">
                   <span className="glyphicon glyphicon-calendar"></span>
                 </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className= "row">
-                <label htmlFor="morningInput">AM/PM</label>
-                  <div className="radio" id="morningInput">
-                    <label><input type="radio" name="optradio"></input>AM</label>
-                    <span>  </span>
-                    <label><input type="radio" name="optradio"></input>PM</label>
-                  </div>
               </div>
             </div>
           </div>
