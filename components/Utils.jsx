@@ -56,9 +56,10 @@ function addInterstitial(){
 
 function addSong(songObject){
   let songNameSplit = songObject.name.split('-')
-  let songName = '\t\t' + songNameSplit[0] + '\n\t' + songNameSplit[1]
+  let songName =  songNameSplit[0] + songNameSplit[1]
   var songNameSlide = pptx.addNewSlide();
-  songNameSlide.addText(songName,{ x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080'})
+  songNameSlide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+  songNameSlide.addText(songName,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'})
   divideSongContentIntoSlides(songObject.content)
 }
 
@@ -96,10 +97,12 @@ function divideSongContentIntoSlides(content){
     if(!(segment == '\nundefined')){
       var slide = pptx.addNewSlide();
       if(i == segments.length-3){
-        slide.addText(segment, { x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080'})
-        slide.addText(segments[i+1], { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff', fill: '000080' })
+        slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+        slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+        slide.addText(segments[i+1], { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
       } else{
-        slide.addText(segment, { x:0.0, y:0.0, w:'100%', h:'100%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff', fill: '000080' })
+        slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+        slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
       }
     }
   }
