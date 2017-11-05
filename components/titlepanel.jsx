@@ -8,7 +8,7 @@ export default class Titlepanel extends React.Component {
         super(props);
         this.state = {
           speaker: "<Insert Speaker's Name Here>",
-          title: "<Insert Title Here>",
+          title: "<Insert Title Here>"
         }
     }
 

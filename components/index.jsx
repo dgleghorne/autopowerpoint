@@ -19,7 +19,6 @@ export default class Index extends React.Component {
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
 
         this.state = {
-          fileName: "Powerpoint " + today ,
           date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
@@ -36,6 +35,10 @@ export default class Index extends React.Component {
           errorStyle: "",
           downloadMessage: false
         }
+    }
+
+    resetForm(){
+      location.reload()
     }
 
     handleChangeDateParent(date){
@@ -113,7 +116,7 @@ export default class Index extends React.Component {
     generatePowerpoint(){
       let that = this
       axios.post('/generatePowerpoint', {
-        fileName: this.state.fileName + '.pptx',
+        fileName: "Powerpoint " + this.state.date + '.pptx',
         date: this.state.date,
         speaker: this.state.speaker,
         title: this.state.title,
@@ -192,7 +195,7 @@ export default class Index extends React.Component {
     render() {
       let downloadLink = null
       if(this.state.downloadMessage){
-        downloadLink = <h3 className="alert alert-success" role="alert">Powerpoint has been generated.  <a href={"/download/" + this.state.fileName}>Download Powerpoint Here</a></h3>
+        downloadLink = <h3 className="alert alert-success" role="alert">Powerpoint has been generated.  <a href={"/download/Powerpoint " + this.state.date}>Download Powerpoint Here</a></h3>
       }
 
         return (
@@ -217,9 +220,14 @@ export default class Index extends React.Component {
                 </div>
               <br/>
               <div className="row">
-                <div className="col-md-3 col-md-offset-9">
+                <div className="col-md-3 col-md-offset-6">
                   <div className="creationForm">
-                      <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.returnPowerpoint.bind(this)}>Generate</button>
+                    <button type="submit" className="btn btn-default btn-block" id="resetForm" onClick={this.resetForm.bind(this)}>Reset</button>
+                  </div>
+                </div>
+                <div className="col-md-3 ">
+                  <div className="creationForm">
+                    <button type="submit" className="btn btn-primary btn-block" id="generatePowerpoint" onClick={this.returnPowerpoint.bind(this)}>Generate</button>
                   </div>
                 </div>
               </div>

@@ -164,7 +164,7 @@ export default class Songspanel extends React.Component {
                   <BootstrapTable data={rows} striped hover>
                     <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
                     <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
-                    <TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>
+                    {/*<TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>*/}
                   </BootstrapTable>
                 </div>
               </div>
