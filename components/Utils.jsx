@@ -92,7 +92,7 @@ function divideSongContentIntoSlides(content){
     segments.push(lines[i] + '\n' + lines[i+1])
   }
   console.log(segments)
-  var nextSegment = segments[segments.length-2].toString()
+  //var nextSegment = segments[segments.length-2].toString()
   for(var i = 0; i < segments.length-2; i++){
     var segment = segments[i].replace('\f', '').replace('\r', '')
     if(!(segment == '\nundefined')){
@@ -100,7 +100,7 @@ function divideSongContentIntoSlides(content){
       if(i == segments.length-3){
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
         slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-        slide.addText(nextSegment, { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
+        slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
       } else{
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
         slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
