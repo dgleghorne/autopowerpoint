@@ -33,7 +33,8 @@ export default class Index extends React.Component {
           selectedSongsArray: [],
           errorMsg: "",
           errorStyle: "",
-          downloadMessage: false
+          downloadMessage: false,
+          fileName: ""
         }
     }
 
@@ -115,8 +116,13 @@ export default class Index extends React.Component {
 
     generatePowerpoint(){
       let that = this
+      var d = new Date();
+      var fileName = "Powerpoint " + d.getTime();
+      this.setState({
+        fileName: fileName
+      })
       axios.post('/generatePowerpoint', {
-        fileName: "Powerpoint " + this.state.date + '.pptx',
+        fileName: fileName,
         date: this.state.date,
         speaker: this.state.speaker,
         title: this.state.title,
@@ -195,7 +201,7 @@ export default class Index extends React.Component {
     render() {
       let downloadLink = null
       if(this.state.downloadMessage){
-        downloadLink = <h3 className="alert alert-success" role="alert">Powerpoint has been generated.  <a href={"/download/Powerpoint " + this.state.date}>Download Powerpoint Here</a></h3>
+        downloadLink = <h3 className="alert alert-success" role="alert">Powerpoint has been generated.  <a href={"/download/" + this.state.fileName}>Download Powerpoint Here</a></h3>
       }
 
         return (
