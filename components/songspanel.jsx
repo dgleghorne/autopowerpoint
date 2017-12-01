@@ -18,7 +18,8 @@ export default class Songspanel extends React.Component {
           songArray: [],
           songTypeArray: songTypeArray,
           noOfSongs: props.noOfSongs,
-          idNo: 0
+          idNo: 0,
+          newSongTextarea: ""
         }
     }
 
@@ -95,6 +96,12 @@ export default class Songspanel extends React.Component {
       })
     }
 
+    handleChangeNewSongTextarea(e){
+      this.setState({
+        newSongTextarea: e.target.value
+      })
+    }
+
     handleChangeNoOfSongs(e){
       this.setState({
         noOfSongs: e.target.value
@@ -107,7 +114,15 @@ export default class Songspanel extends React.Component {
     }
 
     compareSongs(a, b){
-      return a.title.replace('IPH ', '').split('-')[0] - b.title.replace('IPH ', '').split('-')[0]
+      if(a.title.includes('IPH')){
+        return a.title.replace('IPH ', '').split('-')[0] - b.title.replace('IPH ', '').split('-')[0]
+      } else if (a.title.includes('Psalm')){
+        return a.title.replace('Psalm ', '').split(' ')[0] - b.title.replace('Psalm ', '').split(' ')[0]
+      } else if(a.title.includes('Paraphrase')){
+        return a.title.replace('Paraphrase ', '').split(' ')[0] - b.title.replace('Paraphrase ', '').split(' ')[0]
+      } else {
+        return (a.title.toUpperCase() < b.title.toUpperCase()) ? -1 : (a.title.toUpperCase() > b.title.toUpperCase()) ? 1 : 0;
+      }
     }
 
     render() {
@@ -117,62 +132,97 @@ export default class Songspanel extends React.Component {
           <div className="panel-heading">
             <h3 className="panel-title">Songs</h3>
           </div>
-            <div className="panel-body">
-              <div className="row">
-                <div className="col-md-4">
-                  <label htmlFor="noOfSongsInput">Number of Songs</label>
-                  <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </div>
-                {/*<div className="col-md-3">
-                  <label htmlFor="addNewSong"></label>
-                  <button type="submit" className="btn btn-primary btn-block" id="addNewSong" onClick={this.addSongToList.bind(this)}>Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
-                </div>*/}
+          <div className="panel-body">
+            <div className="row">
+              <div className="col-md-4">
+                <label htmlFor="noOfSongsInput">Number of Songs</label>
+                <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
               </div>
+              {/*<div className="col-md-3">
+                <label htmlFor="addNewSong"></label>
+                <button type="submit" className="btn btn-primary btn-block" id="addNewSong" data-toggle="modal" data-target="#newSongModal">Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
+              </div>*/}
+            </div>
+          <br/>
+            <div className="row">
+              <div className="col-md-3">
+                <label htmlFor="songTypeInput">Type</label>
+                <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
+                  <option value="na">--Please select song type--</option>
+                    {
+                      this.state.songTypeArray.map(function(song) {
+                        return <option key={song.id}
+                          value={song.type}>{song.type}</option>;
+                      })
+                    }
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="songTitleInput">Title</label>
+                <select className="form-control" id="songTitleInput" value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
+                  <option value="na">--Select Song Type First--</option>
+                    {
+                      this.state.songArray.sort(this.compareSongs).map(function(song) {
+                        return <option key={song.id}
+                          value={JSON.stringify(song)}>{song.title}</option>;
+                      })
+                    }
+                </select>
+              </div>
+              <div className="col-md-3">
+                <label htmlFor="addSong"></label>
+                <button type="submit" className="btn btn-success btn-block" id="addSong" onClick={this.addSongToList.bind(this)}>Add to presentation <span className="glyphicon glyphicon-plus-sign"></span></button>
+              </div>
+            </div>
             <br/>
-              <div className="row">
-                <div className="col-md-3">
-                  <label htmlFor="songTypeInput">Type</label>
-                  <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
-                    <option value="na">--Please select song type--</option>
-                      {
-                        this.state.songTypeArray.map(function(song) {
-                          return <option key={song.id}
-                            value={song.type}>{song.type}</option>;
-                        })
-                      }
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="songTitleInput">Title</label>
-                  <select className="form-control" id="songTitleInput" value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
-                    <option value="na">--Select Song Type First--</option>
-                      {
-                        this.state.songArray.sort(this.compareSongs).map(function(song) {
-                          return <option key={song.id}
-                            value={JSON.stringify(song)}>{song.title}</option>;
-                        })
-                      }
-                  </select>
-                </div>
-                <div className="col-md-3">
-                  <label htmlFor="addSong"></label>
-                  <button type="submit" className="btn btn-success btn-block" id="addSong" onClick={this.addSongToList.bind(this)}>Add to presentation <span className="glyphicon glyphicon-plus-sign"></span></button>
-                </div>
+            <div className="row">
+              <div className="col-md-12">
+                <BootstrapTable data={rows} striped hover>
+                  <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
+                  <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
+                  {/*<TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>*/}
+                </BootstrapTable>
               </div>
-              <br/>
-              <div className="row">
-                <div className="col-md-12">
-                  <BootstrapTable data={rows} striped hover>
-                    <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
-                    <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
-                    {/*<TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>*/}
-                  </BootstrapTable>
+            </div>
+          </div>
+          {/*<div id="newSongModal" className="modal fade" role="dialog">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="close" data-dismiss="modal">&times;</button>
+                  <h4 className="modal-title">Add new Song to Database</h4>
+                </div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <label htmlFor="songTypeInput">Type</label>
+                      <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
+                        <option value="na">--Please select song type--</option>
+                          {
+                            this.state.songTypeArray.map(function(song) {
+                              return <option key={song.id}
+                                value={song.type}>{song.type}</option>;
+                            })
+                          }
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <h4>Insert song lyrics in the text area below.</h4>
+                    <p>Song will be generated with exactly the lyrics entered.</p>
+                    <textarea value={this.state.newSongTextarea} onChange={this.handleChangeNewSongTextarea.bind(this)}/>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                  <button type="button" className="btn btn-success" data-dismiss="modal">Submit</button>
                 </div>
               </div>
             </div>
+          </div>*/}
         </div>
       )
     }

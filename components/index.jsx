@@ -17,9 +17,10 @@ export default class Index extends React.Component {
         super(props);
         var today = new Date()
         today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
+        let formattedDate = this.formatDate(today)
 
         this.state = {
-          date: today,
+          date: formattedDate,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
           morning: true,
@@ -36,6 +37,30 @@ export default class Index extends React.Component {
           downloadMessage: false,
           fileName: ""
         }
+    }
+
+    formatDate(date){
+      let splitDate = date.split('-')
+      let d = new Date(splitDate[2]+'-'+splitDate[1]+'-'+splitDate[0])
+      let dateNo = splitDate[0]
+      let weekDayNo = d.getDay()
+      let month = splitDate[1]
+      let year = splitDate[2]
+      var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+      var months = ["","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      let weekDay = days[weekDayNo]
+      let monthWord = months[month]
+      let ordinal = "th"
+      if(dateNo == 1){
+        ordinal = "st"
+      }
+      if(dateNo == 2){
+        ordinal = "nd"
+      }
+      if(dateNo == 3){
+        ordinal = "rd"
+      }
+      return weekDay + " " + dateNo + ordinal + " " + monthWord + " " + year
     }
 
     resetForm(){

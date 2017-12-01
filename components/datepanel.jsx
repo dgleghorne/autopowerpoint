@@ -7,33 +7,33 @@ export default class Datepanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          date: this.formatDate(props.today)
+          date: this.props.today
         }
     }
 
-    formatDate(date){
-      let splitDate = date.split('-')
-      let d = new Date(splitDate[2]+'-'+splitDate[1]+'-'+splitDate[0])
-      let dateNo = splitDate[0]
-      let weekDayNo = d.getDay()
-      let month = splitDate[1]
-      let year = splitDate[2]
-      var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-      var months = ["","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-      let weekDay = days[weekDayNo]
-      let monthWord = months[month]
-      let ordinal = "th"
-      if(dateNo == 1){
-        ordinal = "st"
-      }
-      if(dateNo == 2){
-        ordinal = "nd"
-      }
-      if(dateNo == 3){
-        ordinal = "rd"
-      }
-      return weekDay + " " + dateNo + ordinal + " " + monthWord + " " + year
-    }
+    // formatDate(date){
+    //   let splitDate = date.split('-')
+    //   let d = new Date(splitDate[2]+'-'+splitDate[1]+'-'+splitDate[0])
+    //   let dateNo = splitDate[0]
+    //   let weekDayNo = d.getDay()
+    //   let month = splitDate[1]
+    //   let year = splitDate[2]
+    //   var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    //   var months = ["","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    //   let weekDay = days[weekDayNo]
+    //   let monthWord = months[month]
+    //   let ordinal = "th"
+    //   if(dateNo == 1){
+    //     ordinal = "st"
+    //   }
+    //   if(dateNo == 2){
+    //     ordinal = "nd"
+    //   }
+    //   if(dateNo == 3){
+    //     ordinal = "rd"
+    //   }
+    //   return weekDay + " " + dateNo + ordinal + " " + monthWord + " " + year
+    // }
 
     handleChangeDate(e){
       this.setState({
@@ -61,7 +61,6 @@ export default class Datepanel extends React.Component {
     // </div>
 
     render() {
-      this.formatDate(this.state.date)
       return(
         <div className="panel panel-primary">
           <div className="panel-heading">
