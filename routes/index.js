@@ -24,8 +24,9 @@ router.post('/generatepowerpoint/', function(req, res) {
   var reader2 = req.body.reader2
   var pageNo2 = req.body.pageNo2
   var songsArray = JSON.parse(req.body.songsArray)
+  var noOfSongs = req.body.noOfSongs
 
-  Utils.generate(filename, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray)
+  Utils.generate(filename, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs)
   // res.send("All is well!")
   //res.render('download', {title: 'Download Powerpoint'})
   res.send(filename)

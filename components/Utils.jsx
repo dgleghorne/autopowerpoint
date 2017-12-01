@@ -3,7 +3,7 @@
 var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
 var axios = require('axios')
 
-function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray){
+function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
 
@@ -24,6 +24,10 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     addInterstitial()
     addSong(songsArray[3])
     addInterstitial()
+    if(noOfSongs == 5){
+      addSong(songsArray[4])
+      addInterstitial()
+    }
     addCoffee()
 
     // pptx.save('../public/presentations/' + fileName, cb)
