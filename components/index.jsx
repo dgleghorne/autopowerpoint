@@ -161,10 +161,10 @@ export default class Index extends React.Component {
         pageNo2: this.state.pageNo2,
         songsArray: JSON.stringify(this.state.selectedSongsArray)
       }).then(function(response){
-        console.log(response);
+        //console.log(response);
       })
       .catch(function(error){
-        console.log(error);
+        //console.log(error);
       })
     }
 
@@ -207,8 +207,8 @@ export default class Index extends React.Component {
     }
 
     returnPowerpoint(){
-      console.log(this.state.selectedSongsArray.length)
-      console.log(this.state.noOfSongs)
+      // console.log(this.state.selectedSongsArray.length)
+      // console.log(this.state.noOfSongs)
       if(this.state.selectedSongsArray.length < this.state.noOfSongs){
         this.setState({
           errorMsg: "Error: You have not selected enough songs.  Please try again",

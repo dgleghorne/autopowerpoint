@@ -78,7 +78,7 @@ export default class Songspanel extends React.Component {
                             obj.content = obj.content
                             return obj;
                           })
-              console.log(songArray)
+              //console.log(songArray)
               that.setState({
                 songTypeSelection: typeSelection,
                 songArray: songArray
@@ -90,7 +90,7 @@ export default class Songspanel extends React.Component {
     }
 
     handleChangeSongTitle(e){
-      console.log("etv", e.target.value)
+      //console.log("etv", e.target.value)
       this.setState({
         selectedSong: e.target.value
       })
@@ -137,6 +137,7 @@ export default class Songspanel extends React.Component {
               <div className="col-md-4">
                 <label htmlFor="noOfSongsInput">Number of Songs</label>
                 <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
+                  <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>
                 </select>

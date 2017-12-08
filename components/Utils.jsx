@@ -22,8 +22,10 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     addInterstitial()
     addBibleReading(reading2, reader2, pageNo2)
     addInterstitial()
-    addSong(songsArray[3])
-    addInterstitial()
+    if(noOfSongs == 4){
+      addSong(songsArray[3])
+      addInterstitial()
+    }
     if(noOfSongs == 5){
       addSong(songsArray[4])
       addInterstitial()
@@ -88,28 +90,56 @@ function addCoffee(){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', font_size: 32, font_face:'Arial', color: '000000', bold: true})
 }
 
+function cleanSegment(segment){
+  var segmentRpl = segment.replace('\f', '').replace('\r', '')
+  if(!(segmentRpl == '\nundefined') && !(segmentRpl.includes("CCLI")) && segmentRpl != undefined){
+    return segmentRpl
+  }else {
+    return null
+  }
+}
+
 function divideSongContentIntoSlides(content){
   var lines = content.replace('\f', '').replace('\r', '').replace(/ +(?= )/g,'').split('\n');
-  console.log(lines)
-  var segments = []
+  console.log("LINES",lines)
+  var rawSegments = []
   for (var i = 2; i < lines.length ; i=i+2) {
-    segments.push(lines[i] + '\n' + lines[i+1])
+    rawSegments.push(lines[i] + '\n' + lines[i+1])
   }
-  console.log(segments)
+  console.log("SEGMENTS", rawSegments)
+  console.log("SEGMENTS LENGTH", rawSegments.length)
+  let segments = []
+  // rawSegments.forEach((segment)=>{
+  //   segments.push(cleanSegment(segment))
+  // })
+
+  for(var i = 0; i<=rawSegments.length; i++){
+    console.log("RAW SEGMENT: ", rawSegments[i])
+    if(rawSegments[i] != undefined){
+      let result = cleanSegment(rawSegments[i])
+      if(result != null && result != undefined){
+        segments.push(result)
+      }
+    }
+  }
+
   //var nextSegment = segments[segments.length-2].toString()
-  for(var i = 0; i < segments.length-2; i++){
-    var segment = segments[i].replace('\f', '').replace('\r', '')
-    if(!(segment == '\nundefined')){
+  console.log("SEGMENT LENGTH: ", segments.length);
+  for(var i = 0; i < segments.length; i++){
+    // var segment = segments[i].replace('\f', '').replace('\r', '')
+    // if(!(segment == '\nundefined') && !(segment.includes("CCLI"))){
+      console.log("SEGMENT " + i + ": ", segments[i])
       var slide = pptx.addNewSlide();
-      if(i == segments.length-3){
+      if(i == segments.length-1){
+        console.log("ADD CCLI " + i + ": ", segments[i])
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-        slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+        slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
         slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
       } else{
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-        slide.addText(segment, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+        slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
       }
-    }
+    // }
   }
 }
 
