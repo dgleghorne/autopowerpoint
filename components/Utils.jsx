@@ -6,6 +6,7 @@ var axios = require('axios')
 function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
+    pptx.setLayout('LAYOUT_4x3');
 
     // var fileName = "newPPT"
     // var text = "Lots of text...."

@@ -82,7 +82,7 @@ router.get('/getAllFileNamesFromDirectory/:directory', function(req, res) {
   res.send(arrayOfFileObjects)
 })
 
-router.get('/getAllContentFromFile/', function(req, res){
+router.get('/getAllContentFromFile/', function(req, res) {
   var directory = './public/songs/IPH/'
   var file = req.body.filename
   var content = fs.readFileSync(directory + file)
@@ -90,7 +90,7 @@ router.get('/getAllContentFromFile/', function(req, res){
   res.send(content.toString())
 })
 
-router.get('/download/:filename', function(req, res){
+router.get('/download/:filename', function(req, res) {
   var filename = req.params.filename
   var file = './public/presentations/' + filename + '.pptx';
   res.download(file); // Set disposition and send it.
