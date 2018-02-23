@@ -46,9 +46,9 @@ function createWelcomeSlide(date, morning, speaker, title) {
   welcomeSlide.addText("Welcome!",{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', font_size:60, font_face:'Century Gothic', color:'000000', fill:'FFFFFF' })
   welcomeSlide.addText(date,{ x:5.3, y:0.5, w:'40%', h:'17%', align:'C', font_size:32, font_face:'Century Gothic', color:'00cc00', fill:'FFFFFF', bold: true })
   welcomeSlide.addImage({path:'./public/images/churchPic.jpg' , x:0.5 , y:1.5 , w:'48%' , h:'32%'})
-  welcomeSlide.addText(title,{ x:0.5, y:3.3, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addText(speaker,{ x:0.5, y:3.7, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:4.2 , w:'85%' , h:'25%'})
+  welcomeSlide.addText(title,{ x:0.5, y:4.2, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+  welcomeSlide.addText(speaker,{ x:0.5, y:4.6, w:'40%', h:'7%', align:'L', font_size:24, font_face:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+  welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:5.2 , w:'85%' , h:'25%'})
 
   welcomeSlide.bkgd  = 'ffffff';
   welcomeSlide.color = '000000'
@@ -74,9 +74,9 @@ function addBibleReading(reading, reader, pageNo){
   var slide = pptx.addNewSlide();
   slide.addImage({path:'./public/images/bibleReading.jpg', x:0.0, y:0.0, w:'100%', h: '90%'})
   //slide.addShape(pptx.shapes.RECTANGLE, { x:0.0, y:4.0, w:'100%', h:'30%', fill:{type:'solid', color:'E6E6E6', transparency:'50%'} });
-  slide.addText(reading, { x:4.0, y:3.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
-  slide.addText("Reader: " + reader, { x:4.0, y:4.2, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
-  slide.addText("Page: " + pageNo, { x:4.0, y:4.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText(reading, { x:4.0, y:5.2, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText("Reader: " + reader, { x:4.0, y:5.7, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
+  slide.addText("Page: " + pageNo, { x:4.0, y:6.2, w:'60%', h:'10%', align:'R', font_size:32, font_face:'Century Gothic', color:'000000', bold: true})
 }
 
 function addCoffee(){
@@ -135,7 +135,7 @@ function divideSongContentIntoSlides(content){
         console.log("ADD CCLI " + i + ": ", segments[i])
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-        slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
+        slide.addText("CCLI 128675", { x:0.9, y:6.4, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
       } else{
         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
