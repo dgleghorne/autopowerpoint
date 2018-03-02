@@ -35,7 +35,8 @@ export default class Index extends React.Component {
           errorMsg: "",
           errorStyle: "",
           downloadMessage: false,
-          fileName: ""
+          fileName: "",
+          selectedSongsDetailsArray: []
         }
     }
 
@@ -139,13 +140,22 @@ export default class Index extends React.Component {
       })
     }
 
+    handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray){
+      this.setState({
+        selectedSongsDetailsArray: selectedSongsDetailsArray
+      })
+    }
+
     generatePowerpoint(){
       let that = this
       var d = new Date();
       var fileName = "Powerpoint " + d.getTime();
-      this.setState({
+      that.setState({
         fileName: fileName
       })
+      // that.state.selectedSongsArray.forEach((song, i)=> {
+      //   that.getSongDetails(song)
+      // })
       axios.post('/generatePowerpoint', {
         fileName: fileName,
         date: this.state.date,
@@ -159,7 +169,7 @@ export default class Index extends React.Component {
         reading2: this.state.reading1,
         reader2: this.state.reader2,
         pageNo2: this.state.pageNo2,
-        songsArray: JSON.stringify(this.state.selectedSongsArray)
+        songsArray: JSON.stringify(that.state.selectedSongsDetailsArray)
       }).then(function(response){
         //console.log(response);
       })
@@ -247,7 +257,7 @@ export default class Index extends React.Component {
                 </div>
 
                 <div className="row">
-                  <Songspanel handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.state.noOfSongs} handleChangeSelectedSongsArrayParent={this.handleChangeSelectedSongsArrayParent.bind(this)}/>
+                  <Songspanel handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.state.noOfSongs} selectedSongsDetailsArray={this.state.selectedSongsDetailsArray}handleChangeSelectedSongsArrayParent={this.handleChangeSelectedSongsArrayParent.bind(this)} handleChangeSongsDetailsArrayParent={this.handleChangeSongsDetailsArrayParent.bind(this)}/>
                 </div>
               <br/>
               <div className="row">

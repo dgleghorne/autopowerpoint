@@ -30,7 +30,7 @@ export default class Songspanel extends React.Component {
       let idNo = this.state.idNo
       idNo++
       let selectedSong = JSON.parse(this.state.selectedSong)
-      var song = {id: idNo, name: selectedSong.title, filename: selectedSong.filename, content: selectedSong.content}
+      var song = {id: idNo, name: selectedSong.title, filename: selectedSong.filename}
       if(length >= noOfSongs){
         //error message
       }else {
@@ -40,7 +40,22 @@ export default class Songspanel extends React.Component {
           idNo: idNo++
         })
         this.props.handleChangeSelectedSongsArrayParent(this.state.selectedSongsArray)
+        this.getSongDetails(song)
       }
+    }
+
+    getSongDetails(songObject){
+      $.ajax({
+        url: '/getAllContentFromFile/' + songObject.filename,
+          type: 'GET',
+          cache: false,
+          success: (data) => {
+            console.log("DATA", data)
+            let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
+            selectedSongsDetailsArray.push(data)
+            this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
+          }
+      })
     }
 
     handleChangeSongType(e){
@@ -51,7 +66,7 @@ export default class Songspanel extends React.Component {
         switch (typeSelection) {
             case 'IPH':
                 //directory = "./public/songs/IPH/";
-                directory ='IPH'
+                directory ='hymns'
                 break;
             case 'Psalms':
                 directory = "Psalms";
@@ -65,17 +80,17 @@ export default class Songspanel extends React.Component {
         }
         let songArray = []
         $.ajax({
-          url: '/getAllFileNamesFromDirectory/' + directory,
+          url: '/getAllSongTitlesFromDirectory/' + directory,
             //directory: directory,
             type: 'GET',
             cache: false,
             success: (data) => {
               console.log("DATA", data)
+              console.log("directory", directory)
               songArray = data.map((obj, i) => {
                             obj.id = i
-                            obj.title = obj.title + " - " + obj.firstLine
-                            obj.filename = obj.filename
-                            obj.content = obj.content
+                            obj.title = obj.title
+                            obj.filename = directory + '/'+ obj.filename
                             return obj;
                           })
               //console.log(songArray)
@@ -86,6 +101,28 @@ export default class Songspanel extends React.Component {
             }
 
         })
+        // $.ajax({
+        //   url: '/getAllFileNamesFromDirectory/' + directory,
+        //     //directory: directory,
+        //     type: 'GET',
+        //     cache: false,
+        //     success: (data) => {
+        //       console.log("DATA", data)
+        //       songArray = data.map((obj, i) => {
+        //                     obj.id = i
+        //                     obj.title = obj.title + " - " + obj.firstLine
+        //                     obj.filename = obj.filename
+        //                     obj.content = obj.content
+        //                     return obj;
+        //                   })
+        //       //console.log(songArray)
+        //       that.setState({
+        //         songTypeSelection: typeSelection,
+        //         songArray: songArray
+        //       })
+        //     }
+        //
+        // })
 
     }
 

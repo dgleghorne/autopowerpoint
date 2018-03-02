@@ -6,10 +6,18 @@ var axios = require('axios')
 function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs){
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
-
+    //console.log("songsArray ", songsArray)
     // var fileName = "newPPT"
     // var text = "Lots of text...."
-
+    // console.log("songsArray ", songsArray)
+    // console.log("songsArray TYPE OF", typeof songsArray)
+    songsArray = JSON.parse(songsArray)
+// console.log("songsArray 2 ", songsArray)
+// console.log("songsArray 2 TYPE OF", typeof songsArray)
+// console.log("songsArray[0] ", songsArray[0].verses)
+// console.log("songsArray[0] ", songsArray[1].verses)
+// console.log("songsArray[0] ", songsArray[2].verses)
+// console.log("songsArray[0] ", songsArray[3].verses)
     createWelcomeSlide(date, morning, speaker, title)
     addInterstitial()
     addSong(songsArray[0])
@@ -32,7 +40,6 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     }
     addCoffee()
 
-    // pptx.save('../public/presentations/' + fileName, cb)
     pptx.save('./public/presentations/' + fileName)
 }
 
@@ -61,12 +68,14 @@ function addInterstitial(){
 }
 
 function addSong(songObject){
-  let songNameSplit = songObject.name.split('-')
-  let songName =  songNameSplit[0] + songNameSplit[1]
+  console.log("ADD SONG")
+  console.log("add song songObject", songObject)
+  let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
   songNameSlide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-  songNameSlide.addText(songName,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'})
-  divideSongContentIntoSlides(songObject.content)
+  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'})
+  //divideSongContentIntoSlides(songObject.content)
+  divideSongUpIntoSections(songObject)
 }
 
 function addBibleReading(reading, reader, pageNo){
@@ -99,49 +108,117 @@ function cleanSegment(segment){
   }
 }
 
-function divideSongContentIntoSlides(content){
-  var lines = content.replace('\f', '').replace('\r', '').replace(/ +(?= )/g,'').split('\n');
-  console.log("LINES",lines)
-  var rawSegments = []
-  for (var i = 2; i < lines.length ; i=i+2) {
-    rawSegments.push(lines[i] + '\n' + lines[i+1])
-  }
-  console.log("SEGMENTS", rawSegments)
-  console.log("SEGMENTS LENGTH", rawSegments.length)
-  let segments = []
-  // rawSegments.forEach((segment)=>{
-  //   segments.push(cleanSegment(segment))
-  // })
+function splitLinesIntoSections(linesArray){
+  console.log("splitLinesIntoSections")
+  let sections = []
+  console.log("linesArray.length", linesArray.length)
 
-  for(var i = 0; i<=rawSegments.length; i++){
-    console.log("RAW SEGMENT: ", rawSegments[i])
-    if(rawSegments[i] != undefined){
-      let result = cleanSegment(rawSegments[i])
-      if(result != null && result != undefined){
-        segments.push(result)
-      }
-    }
+  for(let i = 0; i < linesArray.length; i=i+2){
+    console.log("linesArray[i]", linesArray[i])
+    console.log("linesArray[i+1]", linesArray[i+1])
+    sections.push(linesArray[i]  + '\n' +  linesArray[i+1])
   }
-
-  //var nextSegment = segments[segments.length-2].toString()
-  console.log("SEGMENT LENGTH: ", segments.length);
-  for(var i = 0; i < segments.length; i++){
-    // var segment = segments[i].replace('\f', '').replace('\r', '')
-    // if(!(segment == '\nundefined') && !(segment.includes("CCLI"))){
-      console.log("SEGMENT " + i + ": ", segments[i])
-      var slide = pptx.addNewSlide();
-      if(i == segments.length-1){
-        console.log("ADD CCLI " + i + ": ", segments[i])
-        slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-        slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-        slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
-      } else{
-        slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-        slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-      }
-    // }
-  }
+  return sections
 }
+
+function splitChorusIntoSections(chorus){
+  console.log("splitChorusIntoSections")
+  let sections = []
+  let chorusLineArray = chorus.split('\n')
+  for(let i = 0; i < chorusLineArray.length; i=i+2){
+    sections.push(chorusLineArray[i] + '\n' + chorusLineArray[i+1])
+  }
+
+  return sections
+}
+
+function divideSongUpIntoSections(songObject){
+  console.log("divideSongUpIntoSections")
+  let sectionArray = []
+  console.log(songObject)
+  if(songObject.chorus.length == 0){
+    songObject.verses.forEach((verse)=>{
+      let sectionsFromVerse = splitLinesIntoSections(verse.lines)
+      console.log("sectionsFromVerse", sectionsFromVerse)
+      sectionsFromVerse.forEach((section) => {
+        section = section.replace('\f', '')
+        sectionArray.push(section)
+      })
+    })
+    console.log("COMPLETED DIVISION - sectionArray: ", sectionArray)
+  } else {
+    songObject.verses.forEach((verse)=>{
+      let sectionsFromVerse = splitLinesIntoSections(verse.lines)
+      sectionsFromVerse.forEach((section) => {
+        section = section.replace('\f', '')
+        sectionArray.push(section)
+      })
+      let sectionsFromChorus = splitChorusIntoSections(songObject.chorus)
+      sectionsFromChorus.forEach((section) => {
+        section = section.replace('\f', '')
+        sectionArray.push(section)
+      })
+    })
+  }
+  console.log("HERE", sectionArray)
+  addSectionsToSlides(sectionArray, songObject.CCLI)
+}
+
+function addSectionsToSlides(sectionArray, CCLI){
+  console.log("addSectionsToSlides")
+  sectionArray.forEach((section, i, array)=> {
+    var slide = pptx.addNewSlide();
+    slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+    slide.addText(section, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+    if(i == array.length-1){
+      slide.addText(CCLI, { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
+    }
+  })
+}
+
+// function divideSongContentIntoSlides(content){
+//   var lines = content.replace('\f', '').replace('\r', '').replace(/ +(?= )/g,'').split('\n');
+//   console.log("LINES",lines)
+//   var rawSegments = []
+//   for (var i = 2; i < lines.length ; i=i+2) {
+//     rawSegments.push(lines[i] + '\n' + lines[i+1])
+//   }
+//   console.log("SEGMENTS", rawSegments)
+//   console.log("SEGMENTS LENGTH", rawSegments.length)
+//   let segments = []
+//   // rawSegments.forEach((segment)=>{
+//   //   segments.push(cleanSegment(segment))
+//   // })
+//
+//   for(var i = 0; i<=rawSegments.length; i++){
+//     console.log("RAW SEGMENT: ", rawSegments[i])
+//     if(rawSegments[i] != undefined){
+//       let result = cleanSegment(rawSegments[i])
+//       if(result != null && result != undefined){
+//         segments.push(result)
+//       }
+//     }
+//   }
+//
+//   //var nextSegment = segments[segments.length-2].toString()
+//   console.log("SEGMENT LENGTH: ", segments.length);
+//   for(var i = 0; i < segments.length; i++){
+//     // var segment = segments[i].replace('\f', '').replace('\r', '')
+//     // if(!(segment == '\nundefined') && !(segment.includes("CCLI"))){
+//       console.log("SEGMENT " + i + ": ", segments[i])
+//       var slide = pptx.addNewSlide();
+//       if(i == segments.length-1){
+//         console.log("ADD CCLI " + i + ": ", segments[i])
+//         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+//         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+//         slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', font_size:14, font_face:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
+//       } else{
+//         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+//         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', font_size:66, font_face:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+//       }
+//     // }
+//   }
+//}
 
 var exports = {}
 exports.generate = generate
