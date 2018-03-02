@@ -30,7 +30,7 @@ export default class Songspanel extends React.Component {
       let idNo = this.state.idNo
       idNo++
       let selectedSong = JSON.parse(this.state.selectedSong)
-      var song = {id: idNo, name: selectedSong.title, filename: selectedSong.filename}
+      var song = {id: idNo, title: selectedSong.title}
       if(length >= noOfSongs){
         //error message
       }else {
@@ -44,17 +44,35 @@ export default class Songspanel extends React.Component {
       }
     }
 
-    getSongDetails(songObject){
-      $.ajax({
-        url: '/getAllContentFromFile/' + songObject.filename,
-          type: 'GET',
-          cache: false,
-          success: (data) => {
-            console.log("DATA", data)
-            let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
-            selectedSongsDetailsArray.push(data)
-            this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
-          }
+    // getSongDetails(songObject){
+    //   $.ajax({
+    //     url: '/getAllContentFromFile/' + songObject.filename,
+    //       type: 'GET',
+    //       cache: false,
+    //       success: (data) => {
+    //         console.log("DATA", data)
+    //         let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
+    //         selectedSongsDetailsArray.push(data)
+    //         this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
+    //       }
+    //   })
+    // }
+    getSongDetails(){
+      let that = this
+      let selectedSongsArray = this.state.selectedSongsArray
+      selectedSongsArray.forEach((song) => {
+        console.log(song)
+        $.ajax({
+            url: '/songs/find/' + song.title,
+              type: 'GET',
+              cache: false,
+              success: (data) => {
+                console.log("DATA", data[0])
+                let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
+                selectedSongsDetailsArray.push(data[0])
+                this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
+              }
+          })
       })
     }
 
@@ -65,8 +83,7 @@ export default class Songspanel extends React.Component {
         var directory;
         switch (typeSelection) {
             case 'IPH':
-                //directory = "./public/songs/IPH/";
-                directory ='hymns'
+                directory ='IPH'
                 break;
             case 'Psalms':
                 directory = "Psalms";
@@ -80,8 +97,7 @@ export default class Songspanel extends React.Component {
         }
         let songArray = []
         $.ajax({
-          url: '/getAllSongTitlesFromDirectory/' + directory,
-            //directory: directory,
+          url: '/songs/find/titles/' + directory,
             type: 'GET',
             cache: false,
             success: (data) => {
@@ -90,29 +106,26 @@ export default class Songspanel extends React.Component {
               songArray = data.map((obj, i) => {
                             obj.id = i
                             obj.title = obj.title
-                            obj.filename = directory + '/'+ obj.filename
                             return obj;
                           })
-              //console.log(songArray)
               that.setState({
                 songTypeSelection: typeSelection,
                 songArray: songArray
               })
             }
-
         })
         // $.ajax({
-        //   url: '/getAllFileNamesFromDirectory/' + directory,
+        //   url: '/getAllSongTitlesFromDirectory/' + directory,
         //     //directory: directory,
         //     type: 'GET',
         //     cache: false,
         //     success: (data) => {
         //       console.log("DATA", data)
+        //       console.log("directory", directory)
         //       songArray = data.map((obj, i) => {
         //                     obj.id = i
-        //                     obj.title = obj.title + " - " + obj.firstLine
-        //                     obj.filename = obj.filename
-        //                     obj.content = obj.content
+        //                     obj.title = obj.title
+        //                     obj.filename = directory + '/'+ obj.filename
         //                     return obj;
         //                   })
         //       //console.log(songArray)
@@ -121,13 +134,10 @@ export default class Songspanel extends React.Component {
         //         songArray: songArray
         //       })
         //     }
-        //
         // })
-
     }
 
     handleChangeSongTitle(e){
-      //console.log("etv", e.target.value)
       this.setState({
         selectedSong: e.target.value
       })
@@ -220,47 +230,12 @@ export default class Songspanel extends React.Component {
               <div className="col-md-12">
                 <BootstrapTable data={rows} striped hover>
                   <TableHeaderColumn width="10%" isKey dataField='id'>Song No.</TableHeaderColumn>
-                  <TableHeaderColumn width="70%" dataField='name'>Title</TableHeaderColumn>
+                  <TableHeaderColumn width="70%" dataField='title'>Title</TableHeaderColumn>
                   {/*<TableHeaderColumn width="20%" dataField='button' dataFormat={this.editButtonFormatter}><span className="glyphicon glyphicon-cog"></span></TableHeaderColumn>*/}
                 </BootstrapTable>
               </div>
             </div>
           </div>
-          {/*<div id="newSongModal" className="modal fade" role="dialog">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <button type="button" className="close" data-dismiss="modal">&times;</button>
-                  <h4 className="modal-title">Add new Song to Database</h4>
-                </div>
-                <div className="modal-body">
-                  <div className="row">
-                    <div className="col-md-4">
-                      <label htmlFor="songTypeInput">Type</label>
-                      <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}>
-                        <option value="na">--Please select song type--</option>
-                          {
-                            this.state.songTypeArray.map(function(song) {
-                              return <option key={song.id}
-                                value={song.type}>{song.type}</option>;
-                            })
-                          }
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <h4>Insert song lyrics in the text area below.</h4>
-                    <p>Song will be generated with exactly the lyrics entered.</p>
-                    <textarea value={this.state.newSongTextarea} onChange={this.handleChangeNewSongTextarea.bind(this)}/>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>
-                  <button type="button" className="btn btn-success" data-dismiss="modal">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>*/}
         </div>
       )
     }

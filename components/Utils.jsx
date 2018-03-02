@@ -4,20 +4,13 @@ var pptx = require("../node_modules/pptxgenjs/dist/pptxgen");
 var axios = require('axios')
 
 function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs){
+
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
-    //console.log("songsArray ", songsArray)
-    // var fileName = "newPPT"
-    // var text = "Lots of text...."
-    // console.log("songsArray ", songsArray)
-    // console.log("songsArray TYPE OF", typeof songsArray)
+
     songsArray = JSON.parse(songsArray)
-// console.log("songsArray 2 ", songsArray)
-// console.log("songsArray 2 TYPE OF", typeof songsArray)
-// console.log("songsArray[0] ", songsArray[0].verses)
-// console.log("songsArray[0] ", songsArray[1].verses)
-// console.log("songsArray[0] ", songsArray[2].verses)
-// console.log("songsArray[0] ", songsArray[3].verses)
+    console.log('songsArray', songsArray)
+
     createWelcomeSlide(date, morning, speaker, title)
     addInterstitial()
     addSong(songsArray[0])

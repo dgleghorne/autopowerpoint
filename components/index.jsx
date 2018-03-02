@@ -153,9 +153,6 @@ export default class Index extends React.Component {
       that.setState({
         fileName: fileName
       })
-      // that.state.selectedSongsArray.forEach((song, i)=> {
-      //   that.getSongDetails(song)
-      // })
       axios.post('/generatePowerpoint', {
         fileName: fileName,
         date: this.state.date,
@@ -181,12 +178,6 @@ export default class Index extends React.Component {
     downloadPowerpoint(){
       var that = this
       var filename = that.state.fileName
-
-      // downloader.get('./public/presentations/' + filename, filename)
-      // .then(function (filename) {
-      //   console.log("File " + filename + " has been downloaded!");
-      // });
-
       $.ajax({
         url: '/download/' + filename,
         type: 'GET',
@@ -200,25 +191,9 @@ export default class Index extends React.Component {
           console.log(filename);
         }
       })
-
-      // axios.get('/downloadpowerpoint/', {
-      //   params:{
-      //     filename: filename
-      //   }
-      // }).then(function(response){
-      //   console.log(response);
-      //   console.log(filename);
-      //   FileDownload(response.data, filename);
-      // })
-      // .catch(function(error){
-      //   console.log(error);
-      //   console.log(filename);
-      // })
     }
 
     returnPowerpoint(){
-      // console.log(this.state.selectedSongsArray.length)
-      // console.log(this.state.noOfSongs)
       if(this.state.selectedSongsArray.length < this.state.noOfSongs){
         this.setState({
           errorMsg: "Error: You have not selected enough songs.  Please try again",
@@ -229,7 +204,6 @@ export default class Index extends React.Component {
         this.setState({
           downloadMessage: true
         })
-        //this.downloadPowerpoint()
       }
     }
 
