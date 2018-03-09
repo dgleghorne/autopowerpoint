@@ -58,4 +58,22 @@ router.delete('/remove/:title', function (req, res) {
   })
 });
 
+//Update song by title
+router.post('/update/:title', function(req, res, next){
+  var update = {
+    title: req.body.title,
+    verses: req.body.verses,
+    CCLI: req.body.CCLI,
+    chorus: req.body.chorus,
+    position: req.body.position,
+    type: req.body.type
+  }
+  var conditions = {title: req.params.title}
+  var options = {multi: false}
+  Song.update(conditions, update, options, function(err, song){
+    if(err){return next(err)}
+    res.status(200).json(update)
+  })
+})
+
 module.exports = router;

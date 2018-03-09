@@ -91,6 +91,12 @@ router.get('/getAllFileNamesFromDirectory/:directory', function(req, res) {
 })
 
 
+router.get('/getAllContentFromFile/', function(req, res) {
+  var directory = './public/songs/IPH/'
+  var file = req.body.filename
+  var content = fs.readFileSync(directory + file)
+})
+
 router.get('/getAllSongTitlesFromDirectory/:directory', function(req, res) {
   var param = req.params.directory
   var directory = "./public/songs/" + param + '/'

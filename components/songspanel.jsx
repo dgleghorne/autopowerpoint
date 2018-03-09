@@ -2,31 +2,34 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+
 
 export default class Songspanel extends React.Component {
     constructor(props) {
         super(props);
 
         var songTypeArray = [
-          {id: 1, type:"IPH"}, {id: 2, type:"Psalms"}, {id: 3, type:"Paraphrases"}, {id: 4, type:"Other"}
+           {id: 1, type:"IPH"},
+          //  {id: 2, type:"Psalms"},
+          //  {id: 3, type:"Paraphrases"},
+           {id: 4, type:"Other"}
         ]
 
         this.state = {
           songTypeSelection: 'na',
           selectedSong: 'na',
-          selectedSongsArray: [],
           songArray: [],
           songTypeArray: songTypeArray,
-          noOfSongs: props.noOfSongs,
           idNo: 0,
           newSongTextarea: ""
         }
     }
 
     addSongToList(){
-      var songArray = this.state.selectedSongsArray
+      var songArray = this.props.selectedSongsArray
       let length = songArray.length
-      let noOfSongs = this.state.noOfSongs
+      let noOfSongs = this.props.noOfSongs
       let idNo = this.state.idNo
       idNo++
       let selectedSong = JSON.parse(this.state.selectedSong)
@@ -36,44 +39,31 @@ export default class Songspanel extends React.Component {
       }else {
         songArray.push(song)
         this.setState({
-          selectedSongsArray: songArray,
           idNo: idNo++
         })
-        this.props.handleChangeSelectedSongsArrayParent(this.state.selectedSongsArray)
+        this.props.handleChangeSelectedSongsArrayParent(songArray)
         this.getSongDetails(song)
       }
     }
 
-    // getSongDetails(songObject){
-    //   $.ajax({
-    //     url: '/getAllContentFromFile/' + songObject.filename,
-    //       type: 'GET',
-    //       cache: false,
-    //       success: (data) => {
-    //         console.log("DATA", data)
-    //         let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
-    //         selectedSongsDetailsArray.push(data)
-    //         this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
-    //       }
-    //   })
-    // }
-    getSongDetails(){
+    getSongDetails(song){
       let that = this
-      let selectedSongsArray = this.state.selectedSongsArray
-      selectedSongsArray.forEach((song) => {
-        console.log(song)
-        $.ajax({
-            url: '/songs/find/' + song.title,
-              type: 'GET',
-              cache: false,
-              success: (data) => {
-                console.log("DATA", data[0])
-                let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
-                selectedSongsDetailsArray.push(data[0])
-                this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
-              }
-          })
-      })
+      let selectedSongsArray = this.props.selectedSongsArray
+      let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
+      console.log("selectedSongsDetailsArray INITIAL", selectedSongsDetailsArray )
+      console.log(song)
+      $.ajax({
+          url: '/songs/find/' + song.title,
+            type: 'GET',
+            cache: false,
+            success: (data) => {
+              console.log("DATA", data[0])
+              console.log("selectedSongsDetailsArray BEFORE", selectedSongsDetailsArray )
+              selectedSongsDetailsArray.push(data[0])
+              console.log("selectedSongsDetailsArray AFTER", selectedSongsDetailsArray )
+            }
+        })
+      this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
     }
 
     handleChangeSongType(e){
@@ -114,27 +104,6 @@ export default class Songspanel extends React.Component {
               })
             }
         })
-        // $.ajax({
-        //   url: '/getAllSongTitlesFromDirectory/' + directory,
-        //     //directory: directory,
-        //     type: 'GET',
-        //     cache: false,
-        //     success: (data) => {
-        //       console.log("DATA", data)
-        //       console.log("directory", directory)
-        //       songArray = data.map((obj, i) => {
-        //                     obj.id = i
-        //                     obj.title = obj.title
-        //                     obj.filename = directory + '/'+ obj.filename
-        //                     return obj;
-        //                   })
-        //       //console.log(songArray)
-        //       that.setState({
-        //         songTypeSelection: typeSelection,
-        //         songArray: songArray
-        //       })
-        //     }
-        // })
     }
 
     handleChangeSongTitle(e){
@@ -150,14 +119,15 @@ export default class Songspanel extends React.Component {
     }
 
     handleChangeNoOfSongs(e){
-      this.setState({
-        noOfSongs: e.target.value
-      })
       this.props.handleChangeNoOfSongsParent(e.target.value)
     }
 
+    removeSong(e){
+      console.log("REMOVE", e.target.value)
+    }
+
     editButtonFormatter(cell, row){
-      return <button type="button" className="btn btn-danger" >Remove <span className="glyphicon glyphicon-trash"></span></button>
+      return <button type="button" className="btn btn-danger">Remove <span className="glyphicon glyphicon-trash"></span></button>
     }
 
     compareSongs(a, b){
@@ -173,7 +143,7 @@ export default class Songspanel extends React.Component {
     }
 
     render() {
-      var rows = this.state.selectedSongsArray
+      var rows = this.props.selectedSongsArray
       return(
         <div className="panel panel-primary">
           <div className="panel-heading">
@@ -183,7 +153,7 @@ export default class Songspanel extends React.Component {
             <div className="row">
               <div className="col-md-4">
                 <label htmlFor="noOfSongsInput">Number of Songs</label>
-                <select className="form-control" id="noOfSongsInput" value={this.state.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
+                <select className="form-control" id="noOfSongsInput" value={this.props.noOfSongs} onChange={this.handleChangeNoOfSongs.bind(this)}>
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>
