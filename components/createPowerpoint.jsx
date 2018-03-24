@@ -21,7 +21,6 @@ export default class CreatePowerpoint extends React.Component {
   }
 
   resetForm(){
-    console.log("RESET FORM child")
     this.props.resetForm()
     this.setState({
       errorMsg: "",
