@@ -7,12 +7,10 @@ import AddEditSong from './addEditSong.jsx'
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
-        var today = new Date()
-        today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
-        let formattedDate = this.formatDate(today)
+        var today = this.getToday()
 
         this.state = {
-          date: formattedDate,
+          date: today,
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
           morning: true,
@@ -27,6 +25,33 @@ export default class Index extends React.Component {
           selectedSongsDetailsArray: [],
           screen: "CreatePowerpoint"
         }
+    }
+
+    getToday(){
+      var today = new Date()
+      today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
+      return this.formatDate(today)
+    }
+
+    resetForm(){
+      console.log("RESET FORM Parent")
+      var today = this.getToday()
+      this.setState({
+        date: today,
+        speaker: "<Insert Speaker's Name Here>",
+        title: "<Insert Title Here>",
+        morning: true,
+        noOfSongs: 4,
+        reading1: "<Insert Bible Reading Here>",
+        reader1: "<Insert Reader Here>",
+        pageNo1: "<Insert Page No Here>",
+        reading2: "<Insert Bible Reading Here>",
+        reader2: "<Insert Reader Here>",
+        pageNo2: "<Insert Page No Here>",
+        selectedSongsArray: [],
+        selectedSongsDetailsArray: [],
+        screen: "CreatePowerpoint"
+      })
     }
 
     formatDate(date){
@@ -150,6 +175,7 @@ export default class Index extends React.Component {
               </div>
               <div className="row">
                 {this.state.screen == "CreatePowerpoint" ? <CreatePowerpoint
+                  resetForm={this.resetForm.bind(this)}
                   date={this.state.date}
                   title={this.state.title}
                   morning={this.state.morning}

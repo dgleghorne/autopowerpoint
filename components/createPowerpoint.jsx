@@ -21,7 +21,14 @@ export default class CreatePowerpoint extends React.Component {
   }
 
   resetForm(){
-    location.reload()
+    console.log("RESET FORM child")
+    this.props.resetForm()
+    this.setState({
+      errorMsg: "",
+      errorStyle: "",
+      downloadMessage: false,
+      fileName: ""
+    })
   }
 
   generatePowerpoint(){
@@ -46,10 +53,15 @@ export default class CreatePowerpoint extends React.Component {
       pageNo2: this.props.pageNo2,
       songsArray: JSON.stringify(that.props.selectedSongsDetailsArray)
     }).then(function(response){
-      //console.log(response);
+      that.setState({
+        downloadMessage: true
+      })
     })
     .catch(function(error){
-      //console.log(error);
+      that.setState({
+        errorMsg: "Error: Failure to generate Powerpoint",
+        errorStyle: "alert alert-danger"
+      })
     })
   }
 
@@ -67,6 +79,10 @@ export default class CreatePowerpoint extends React.Component {
       error: (err) => {
         console.log(error);
         console.log(filename);
+        that.setState({
+          errorMsg: "Error: Failure to download Powerpoint",
+          errorStyle: "alert alert-danger"
+        })
       }
     })
   }
@@ -79,9 +95,6 @@ export default class CreatePowerpoint extends React.Component {
       })
     } else{
       this.generatePowerpoint()
-      this.setState({
-        downloadMessage: true
-      })
     }
   }
 
