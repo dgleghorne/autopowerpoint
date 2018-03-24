@@ -41,7 +41,7 @@ export default class CreatePowerpoint extends React.Component {
       reading1: this.props.reading1,
       reader1: this.props.reader1,
       pageNo1: this.props.pageNo1,
-      reading2: this.props.reading1,
+      reading2: this.props.reading2,
       reader2: this.props.reader2,
       pageNo2: this.props.pageNo2,
       songsArray: JSON.stringify(that.props.selectedSongsDetailsArray)
