@@ -13,7 +13,7 @@ export default class AddEditSong extends React.Component {
       ]
       this.state = {
         title: "",
-        CCLI: "",
+        CCLI: "CCLI 128675",
         chorus: "",
         verses: [],
         position: "",
