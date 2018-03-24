@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import CreatePowerpoint from './createPowerpoint.jsx'
-
+import AddEditSong from './addEditSong.jsx'
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -145,7 +145,7 @@ export default class Index extends React.Component {
                 <ul className="nav nav-tabs">
                   <li role="presentation" className={this.state.screen == "CreatePowerpoint" ? "active" : ""} onClick={this.setScreen.bind(this)}><a>Create Powerpoint</a></li>
                   <li role="presentation" className={this.state.screen == "Add/EditSong" ? "active" : ""} onClick={this.setScreen.bind(this)}><a>Add/Edit Song</a></li>
-                  <li role="presentation" className={this.state.screen == "Announcements" ? "active" : ""} onClick={this.setScreen.bind(this)}><a>Announcements</a></li>
+                  {/*<li role="presentation" className={this.state.screen == "Announcements" ? "active" : ""} onClick={this.setScreen.bind(this)}><a>Announcements</a></li>*/}
                 </ul>
               </div>
               <div className="row">
@@ -177,7 +177,7 @@ export default class Index extends React.Component {
                   handleChangeSelectedSongsArrayParent={this.handleChangeSelectedSongsArrayParent.bind(this)}
                   handleChangeSongsDetailsArrayParent={this.handleChangeSongsDetailsArrayParent.bind(this)}
                   /> : null}
-                  {this.state.screen == "Add/EditSong" ? <p>addNewSong</p> : null }
+                  {this.state.screen == "Add/EditSong" ? <AddEditSong/> : null }
                   {this.state.screen == "Announcements" ? <p>Announcements</p> : null }
               </div>
             </div>

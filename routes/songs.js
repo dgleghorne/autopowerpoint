@@ -35,8 +35,8 @@ router.get('/find/titles/:type', function(req, res){
 })
 
 //return all types of songs
-router.get('/find/types', function(req, res){
-  Song.find({},'types', function(err, songs){
+router.get('/find/types/', function(req, res){
+  Song.find({},'type', function(err, songs){
     if(err){return next(err)}
     res.json(songs)
   })
@@ -69,8 +69,8 @@ router.post('/update/:title', function(req, res, next){
     type: req.body.type
   }
   var conditions = {title: req.params.title}
-  var options = {multi: false}
-  Song.update(conditions, update, options, function(err, song){
+  var options = {multi: false, upsert: true}
+  Song.findOneAndUpdate(conditions, update, options, function(err, song){
     if(err){return next(err)}
     res.status(200).json(update)
   })
