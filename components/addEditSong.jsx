@@ -13,7 +13,7 @@ export default class AddEditSong extends React.Component {
       ]
       this.state = {
         title: "",
-        ccli: "",
+        CCLI: "",
         chorus: "",
         verses: [],
         position: "",
@@ -88,7 +88,7 @@ export default class AddEditSong extends React.Component {
 
   changeCCLI(e){
     this.setState({
-      ccli: e.target.value
+      CCLI: e.target.value
     })
   }
 
@@ -185,7 +185,7 @@ export default class AddEditSong extends React.Component {
               title: data[0].title,
               chorus: data[0].chorus,
               verses: data[0].verses,
-              ccli: data[0].CCLI
+              CCLI: data[0].CCLI
             })
             this.getVerseContents(data[0].verses)
           }
@@ -285,7 +285,7 @@ export default class AddEditSong extends React.Component {
             <label htmlFor="chorus">Chorus:</label>
             <textarea className="form-control" rows="5" id="chorus" value={this.state.chorus} onChange={this.changeChorus.bind(this)}></textarea>
             <label htmlFor="CCLI">CCLI:</label>
-            <textarea className="form-control" rows="1" id="CCLI" value={this.state.ccli} onChange={this.changeCCLI.bind(this)}></textarea>
+            <textarea className="form-control" rows="1" id="CCLI" value={this.state.CCLI} onChange={this.changeCCLI.bind(this)}></textarea>
             <br/>
             <button type="button" className="btn btn-primary" onClick={this.saveSong.bind(this)}>Save</button>
           </div>
