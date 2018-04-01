@@ -3,7 +3,7 @@
 var PptxGenJS = require("../node_modules/pptxgenjs/dist/pptxgen");
 var axios = require('axios')
 
-function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, songsArray, noOfSongs){
+function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, backgroundColour, textColour, songsArray, noOfSongs){
     var pptx = new PptxGenJS();
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
@@ -14,22 +14,22 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
 
     createWelcomeSlide(pptx, date, morning, speaker, title)
     addInterstitial(pptx)
-    addSong(pptx, songsArray[0])
+    addSong(pptx, songsArray[0], backgroundColour, textColour)
     addInterstitial(pptx)
     addBibleReading(pptx, reading1, reader1, pageNo1)
     addInterstitial(pptx)
-    addSong(pptx, songsArray[1])
+    addSong(pptx, songsArray[1], backgroundColour, textColour)
     addInterstitial(pptx)
-    addSong(pptx, songsArray[2])
+    addSong(pptx, songsArray[2], backgroundColour, textColour)
     addInterstitial(pptx)
     addBibleReading(pptx, reading2, reader2, pageNo2)
     addInterstitial(pptx)
     if(noOfSongs == 4){
-      addSong(pptx, songsArray[3])
+      addSong(pptx, songsArray[3], backgroundColour, textColour)
       addInterstitial(pptx)
     }
     if(noOfSongs == 5){
-      addSong(pptx, songsArray[4])
+      addSong(pptx, songsArray[4], backgroundColour, textColour)
       addInterstitial(pptx)
     }
     addCoffee(pptx)
@@ -62,15 +62,15 @@ function addInterstitial(pptx){
   slide.addImage({path:'./public/images/blueCrossBackground.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
 }
 
-function addSong(pptx, songObject){
+function addSong(pptx, songObject, backgroundColour, textColour){
   console.log("ADD SONG")
   console.log("add song songObject", songObject)
   let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
-  songNameSlide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color:'ffffff'})
+  songNameSlide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
+  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)})
   //divideSongContentIntoSlides(songObject.content)
-  divideSongUpIntoSections(pptx, songObject)
+  divideSongUpIntoSections(pptx, songObject, backgroundColour, textColour)
 }
 
 function addBibleReading(pptx, reading, reader, pageNo){
@@ -131,7 +131,7 @@ function splitChorusIntoSections(chorus){
   return sections
 }
 
-function divideSongUpIntoSections(pptx,songObject){
+function divideSongUpIntoSections(pptx,songObject, backgroundColour, textColour){
   console.log("divideSongUpIntoSections")
   let sectionArray = []
   console.log(songObject)
@@ -160,19 +160,55 @@ function divideSongUpIntoSections(pptx,songObject){
     })
   }
   console.log("HERE", sectionArray)
-  addSectionsToSlides(pptx, sectionArray, songObject.CCLI)
+  addSectionsToSlides(pptx, sectionArray, songObject.CCLI, backgroundColour, textColour)
 }
 
-function addSectionsToSlides(pptx, sectionArray, CCLI){
+function addSectionsToSlides(pptx, sectionArray, CCLI, backgroundColour, textColour){
   console.log("addSectionsToSlides")
   sectionArray.forEach((section, i, array)=> {
     var slide = pptx.addNewSlide();
-    slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-    slide.addText(section, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
+    slide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
+    slide.addText(section, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)}) //, fill: '000080'})
     if(i == array.length-1){
-      slide.addText(CCLI, { x:0.9, y:6.1, w:'64%', h:'5%', align:'L', fontSize:14, fontFace:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
+      slide.addText(CCLI, { x:0.9, y:6.1, w:'64%', h:'5%', align:'L', fontSize:14, fontFace:'Times New Roman', color:convertTextColour(textColour)}) //, fill: '000080'})
     }
   })
+}
+
+function convertBackgroundColour(backgroundColour){
+  var background
+  switch(backgroundColour) {
+      case "darkBlue":
+          background = './public/images/Navy-Blue-Plain-Backgrounds.jpg'
+          break;
+      case "lightSkyBlue":
+            background = './public/images/light-sky-blue-solid-color-background.jpg'
+          break;
+      case "white":
+          background = './public/images/plain-white-background.jpg'
+          break;
+      default:
+          background = './public/images/Navy-Blue-Plain-Backgrounds.jpg'
+  }
+  return background
+}
+
+function convertTextColour(textColour){
+  var colour
+  switch(textColour) {
+      case "white":
+          colour = 'ffffff'
+          break;
+      case "black":
+            colour = '000000'
+          break;
+      case "yellow":
+          colour = 'ffff00'
+          break;
+      default:
+          colour = 'ffffff'
+  }
+  return colour
 }
 
 // function divideSongContentIntoSlides(content){

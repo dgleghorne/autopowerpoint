@@ -21,7 +21,6 @@ export default class Songspanel extends React.Component {
           selectedSong: 'na',
           songArray: [],
           songTypeArray: songTypeArray,
-          idNo: 0,
           newSongTextarea: ""
         }
     }
@@ -30,17 +29,17 @@ export default class Songspanel extends React.Component {
       var songArray = this.props.selectedSongsArray
       let length = songArray.length
       let noOfSongs = this.props.noOfSongs
-      let idNo = this.state.idNo
+      let idNo = this.props.idNo
+      console.log("IDNo Props1: ", idNo)
       idNo++
+      console.log("IDNo Props2: ", idNo)
       let selectedSong = JSON.parse(this.state.selectedSong)
       var song = {id: idNo, title: selectedSong.title}
       if(length >= noOfSongs){
         //error message
       }else {
         songArray.push(song)
-        this.setState({
-          idNo: idNo++
-        })
+        this.props.handleChangeIdNo(idNo)
         this.props.handleChangeSelectedSongsArrayParent(songArray)
         this.getSongDetails(song)
       }

@@ -23,7 +23,9 @@ export default class Index extends React.Component {
           pageNo2: "<Insert Page No Here>",
           selectedSongsArray: [],
           selectedSongsDetailsArray: [],
-          screen: "CreatePowerpoint"
+          screen: "CreatePowerpoint",
+          backgroundColour: "darkBlue",
+          textColour: "white"
         }
     }
 
@@ -50,7 +52,9 @@ export default class Index extends React.Component {
         pageNo2: "<Insert Page No Here>",
         selectedSongsArray: [],
         selectedSongsDetailsArray: [],
-        screen: "CreatePowerpoint"
+        screen: "CreatePowerpoint",
+        backgroundColour: "darkBlue",
+        textColour: "white"
       })
     }
 
@@ -144,6 +148,18 @@ export default class Index extends React.Component {
       })
     }
 
+    handleChangeBackgroundColour(value){
+      this.setState({
+        backgroundColour: value
+      })
+    }
+
+    handleChangeTextColour(value){
+      this.setState({
+        textColour: value
+      })
+    }
+
     handleChangeSelectedSongsArrayParent(selectedSongsArray){
       this.setState({
         selectedSongsArray: selectedSongsArray
@@ -189,6 +205,8 @@ export default class Index extends React.Component {
                   noOfSongs={this.state.noOfSongs}
                   selectedSongsArray={this.state.selectedSongsArray}
                   selectedSongsDetailsArray={this.state.selectedSongsDetailsArray}
+                  backgroundColour={this.state.backgroundColour}
+                  textColour={this.state.textColour}
                   handleChangeDateParent={this.handleChangeDateParent.bind(this)}
                   handleChangeMorningParent={this.handleChangeMorningParent.bind(this)}
                   handleChangeSpeakerParent={this.handleChangeSpeakerParent.bind(this)}
@@ -202,6 +220,8 @@ export default class Index extends React.Component {
                   handleChangeNoOfSongsParent={this.handleChangeNoOfSongsParent.bind(this)}
                   handleChangeSelectedSongsArrayParent={this.handleChangeSelectedSongsArrayParent.bind(this)}
                   handleChangeSongsDetailsArrayParent={this.handleChangeSongsDetailsArrayParent.bind(this)}
+                  handleChangeBackgroundColour={this.handleChangeBackgroundColour.bind(this)}
+                  handleChangeTextColour={this.handleChangeTextColour.bind(this)}
                   /> : null}
                   {this.state.screen == "Add/EditSong" ? <AddEditSong/> : null }
                   {this.state.screen == "Announcements" ? <p>Announcements</p> : null }

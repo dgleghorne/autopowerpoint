@@ -4,6 +4,7 @@ import Datepanel from './datepanel.jsx'
 import Titlepanel from './titlepanel.jsx'
 import Readingspanel from './readingspanel.jsx'
 import Songspanel from './songspanel.jsx'
+import Formatpanel from './formatpanel.jsx'
 import axios from 'axios'
 import Utils from './Utils.jsx'
 const FileDownload = require('js-file-download'); //May not be necessary
@@ -16,7 +17,8 @@ export default class CreatePowerpoint extends React.Component {
         errorMsg: "",
         errorStyle: "",
         downloadMessage: false,
-        fileName: ""
+        fileName: "",
+        id: 0
       }
   }
 
@@ -26,7 +28,15 @@ export default class CreatePowerpoint extends React.Component {
       errorMsg: "",
       errorStyle: "",
       downloadMessage: false,
-      fileName: ""
+      fileName: "",
+      idNo: 0
+    })
+  }
+
+  handleChangeIdNo(id){
+    console.log("IDNo Props onChange parent: ", id)
+    this.setState({
+      id: id
     })
   }
 
@@ -50,6 +60,8 @@ export default class CreatePowerpoint extends React.Component {
       reading2: this.props.reading2,
       reader2: this.props.reader2,
       pageNo2: this.props.pageNo2,
+      backgroundColour: this.props.backgroundColour,
+      textColour: this.props.textColour,
       songsArray: JSON.stringify(that.props.selectedSongsDetailsArray)
     }).then(function(response){
       that.setState({
@@ -107,40 +119,47 @@ export default class CreatePowerpoint extends React.Component {
         <div className="row">
           <h2>Create Powerpoint</h2>
         </div>
-          <div className="row">
-            <Datepanel
-              handleChangeDateParent={this.props.handleChangeDateParent.bind(this)} date={this.props.date}
-              handleChangeMorningParent={this.props.handleChangeMorningParent.bind(this)} morning={this.props.morning}
-            />
-          </div>
+        <div className="row">
+          <Formatpanel
+            handleChangeBackgroundColour={this.props.handleChangeBackgroundColour.bind(this)} backgroundColour={this.props.backgroundColour}
+            handleChangeTextColour={this.props.handleChangeTextColour.bind(this)} textColour={this.props.textColour}
+          />
+        </div>
+        <div className="row">
+          <Datepanel
+            handleChangeDateParent={this.props.handleChangeDateParent.bind(this)} date={this.props.date}
+            handleChangeMorningParent={this.props.handleChangeMorningParent.bind(this)} morning={this.props.morning}
+          />
+        </div>
 
-          <div className="row">
-            <Titlepanel
-              handleChangeSpeakerParent={this.props.handleChangeSpeakerParent.bind(this)} speaker={this.props.speaker}
-              handleChangeTitleParent={this.props.handleChangeTitleParent.bind(this)} title={this.props.title}
-            />
-          </div>
+        <div className="row">
+          <Titlepanel
+            handleChangeSpeakerParent={this.props.handleChangeSpeakerParent.bind(this)} speaker={this.props.speaker}
+            handleChangeTitleParent={this.props.handleChangeTitleParent.bind(this)} title={this.props.title}
+          />
+        </div>
 
-          <div className="row">
-            <Readingspanel
-              handleChangeReader1Parent={this.props.handleChangeReader1Parent.bind(this)} reader1={this.props.reader1}
-              handleChangeReading1Parent={this.props.handleChangeReading1Parent.bind(this)} reading1={this.props.reading1}
-              handleChangePageNo1Parent={this.props.handleChangePageNo1Parent.bind(this)} pageNo1={this.props.pageNo1}
-              handleChangeReader2Parent={this.props.handleChangeReader2Parent.bind(this)} reader2={this.props.reader2}
-              handleChangeReading2Parent={this.props.handleChangeReading2Parent.bind(this)} reading2={this.props.reading2}
-              handleChangePageNo2Parent={this.props.handleChangePageNo2Parent.bind(this)} pageNo2={this.props.pageNo2}
-            />
-          </div>
+        <div className="row">
+          <Readingspanel
+            handleChangeReader1Parent={this.props.handleChangeReader1Parent.bind(this)} reader1={this.props.reader1}
+            handleChangeReading1Parent={this.props.handleChangeReading1Parent.bind(this)} reading1={this.props.reading1}
+            handleChangePageNo1Parent={this.props.handleChangePageNo1Parent.bind(this)} pageNo1={this.props.pageNo1}
+            handleChangeReader2Parent={this.props.handleChangeReader2Parent.bind(this)} reader2={this.props.reader2}
+            handleChangeReading2Parent={this.props.handleChangeReading2Parent.bind(this)} reading2={this.props.reading2}
+            handleChangePageNo2Parent={this.props.handleChangePageNo2Parent.bind(this)} pageNo2={this.props.pageNo2}
+          />
+        </div>
 
-          <div className="row">
-            <Songspanel
-              handleChangeNoOfSongsParent={this.props.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.props.noOfSongs}
-              selectedSongsDetailsArray={this.props.selectedSongsDetailsArray}
-              handleChangeSelectedSongsArrayParent={this.props.handleChangeSelectedSongsArrayParent.bind(this)} selectedSongsArray={this.props.selectedSongsArray}
-              handleChangeSongsDetailsArrayParent={this.props.handleChangeSongsDetailsArrayParent.bind(this)}
-            />
-          </div>
-        <br/>
+        <div className="row">
+          <Songspanel
+            handleChangeNoOfSongsParent={this.props.handleChangeNoOfSongsParent.bind(this)} noOfSongs={this.props.noOfSongs}
+            selectedSongsDetailsArray={this.props.selectedSongsDetailsArray}
+            handleChangeSelectedSongsArrayParent={this.props.handleChangeSelectedSongsArrayParent.bind(this)} selectedSongsArray={this.props.selectedSongsArray}
+            handleChangeSongsDetailsArrayParent={this.props.handleChangeSongsDetailsArrayParent.bind(this)}
+            handleChangeIdNo={this.handleChangeIdNo.bind(this)} idNo={this.state.id}
+          />
+        </div>
+      <br/>
         <div className="row">
           <div className="col-md-3 col-md-offset-6">
             <div className="creationForm">
