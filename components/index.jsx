@@ -24,8 +24,10 @@ export default class Index extends React.Component {
           selectedSongsArray: [],
           selectedSongsDetailsArray: [],
           screen: "CreatePowerpoint",
-          backgroundColour: "darkBlue",
-          textColour: "white"
+          backgroundColour: "white",
+          textColour: "black",
+          interstitial: "colouredCrossBackground",
+          welcomeSlide: "colouredCross"
         }
     }
 
@@ -54,7 +56,9 @@ export default class Index extends React.Component {
         selectedSongsDetailsArray: [],
         screen: "CreatePowerpoint",
         backgroundColour: "darkBlue",
-        textColour: "white"
+        textColour: "white",
+        interstitial: "colouredCrossBackground",
+        welcomeSlide: "colouredCross"
       })
     }
 
@@ -160,6 +164,18 @@ export default class Index extends React.Component {
       })
     }
 
+    handleChangeInterstitial(value){
+      this.setState({
+        interstitial: value
+      })
+    }
+
+    handleChangeWelcomeSlide(value){
+      this.setState({
+        welcomeSlide: value
+      })
+    }
+
     handleChangeSelectedSongsArrayParent(selectedSongsArray){
       this.setState({
         selectedSongsArray: selectedSongsArray
@@ -207,6 +223,8 @@ export default class Index extends React.Component {
                   selectedSongsDetailsArray={this.state.selectedSongsDetailsArray}
                   backgroundColour={this.state.backgroundColour}
                   textColour={this.state.textColour}
+                  interstitial={this.state.interstitial}
+                  welcomeSlide={this.state.welcomeSlide}
                   handleChangeDateParent={this.handleChangeDateParent.bind(this)}
                   handleChangeMorningParent={this.handleChangeMorningParent.bind(this)}
                   handleChangeSpeakerParent={this.handleChangeSpeakerParent.bind(this)}
@@ -222,6 +240,8 @@ export default class Index extends React.Component {
                   handleChangeSongsDetailsArrayParent={this.handleChangeSongsDetailsArrayParent.bind(this)}
                   handleChangeBackgroundColour={this.handleChangeBackgroundColour.bind(this)}
                   handleChangeTextColour={this.handleChangeTextColour.bind(this)}
+                  handleChangeInterstitial={this.handleChangeInterstitial.bind(this)}
+                  handleChangeWelcomeSlide={this.handleChangeWelcomeSlide.bind(this)}
                   /> : null}
                   {this.state.screen == "Add/EditSong" ? <AddEditSong/> : null }
                   {this.state.screen == "Announcements" ? <p>Announcements</p> : null }

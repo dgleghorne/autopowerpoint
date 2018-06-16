@@ -3,7 +3,7 @@
 var PptxGenJS = require("../node_modules/pptxgenjs/dist/pptxgen");
 var axios = require('axios')
 
-function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, backgroundColour, textColour, songsArray, noOfSongs){
+function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, backgroundColour, textColour, songsArray, noOfSongs, welcomeSlide, interstitial){
     var pptx = new PptxGenJS();
     pptx.setAuthor('AutoPowerpoint');
     pptx.setCompany('High Street Presbyterian, Antrim');
@@ -11,26 +11,28 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
 
     songsArray = JSON.parse(songsArray)
     console.log('songsArray', songsArray)
+    console.log("welcomeSlide", welcomeSlide)
+    console.log("interstitial", interstitial)
 
-    createWelcomeSlide(pptx, date, morning, speaker, title)
-    addInterstitial(pptx)
+    createWelcomeSlide(pptx, date, morning, speaker, title, welcomeSlide)
+    addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[0], backgroundColour, textColour)
     addInterstitial(pptx)
     addBibleReading(pptx, reading1, reader1, pageNo1)
-    addInterstitial(pptx)
+    addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[1], backgroundColour, textColour)
-    addInterstitial(pptx)
+    addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[2], backgroundColour, textColour)
-    addInterstitial(pptx)
+    addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading2, reader2, pageNo2)
-    addInterstitial(pptx)
+    addInterstitial(pptx, interstitial)
     if(noOfSongs == 4 || noOfSongs == 5){
       addSong(pptx, songsArray[3], backgroundColour, textColour)
-      addInterstitial(pptx)
+      addInterstitial(pptx, interstitial)
     }
     if(noOfSongs == 5){
       addSong(pptx, songsArray[4], backgroundColour, textColour)
-      addInterstitial(pptx)
+      addInterstitial(pptx, interstitial)
     }
     addCoffee(pptx)
 
@@ -42,14 +44,25 @@ function saveCallback(filename) {
 	 console.log('Good News Everyone!  File created: '+ filename);
 }
 
-function createWelcomeSlide(pptx, date, morning, speaker, title) {
+function createWelcomeSlide(pptx, date, morning, speaker, title, format) {
   var welcomeSlide = pptx.addNewSlide();
-  welcomeSlide.addText("Welcome!",{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', fontSize:60, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF' })
-  welcomeSlide.addText(date,{ x:5.3, y:0.5, w:'40%', h:'17%', align:'C', fontSize:32, fontFace:'Century Gothic', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addImage({path:'./public/images/churchPic.jpg' , x:0.5 , y:1.5 , w:'48%' , h:'32%'})
-  welcomeSlide.addText(title,{ x:0.5, y:4.2, w:'40%', h:'7%', align:'L', fontSize:24, fontFace:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addText(speaker,{ x:0.5, y:4.6, w:'40%', h:'7%', align:'L', fontSize:24, fontFace:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
-  welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:5.2 , w:'85%' , h:'25%'})
+
+  if(format == "colouredCross"){
+    welcomeSlide.addImage({path:'./public/images/welcomeBackground.png' , x:0.0 , y:0.0 , w:'100%' , h:'100%'})
+    welcomeSlide.addText("Welcome! \nWe're glad you're here",{ x:3.2, y:0.7, w:'70%', h:'20%', align:'C', fontSize:48, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF' })
+    welcomeSlide.addText(date,{ x:3.2, y:5.8, w:'70%', h:'5%', align:'L', fontSize:24, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF', bold: true })
+    welcomeSlide.addText(speaker,{ x:3.2, y:6.3, w:'70%', h:'5%', align:'L', fontSize:24, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF', bold: true })
+    welcomeSlide.addText(title,{ x:3.2, y:6.8, w:'70%', h:'5%', align:'L', fontSize:24, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF', bold: true })
+  } else {
+    welcomeSlide.addText("Welcome!",{ x:0.1, y:0.5, w:'64%', h:'15%', align:'L', fontSize:60, fontFace:'Century Gothic', color:'000000', fill:'FFFFFF' })
+    welcomeSlide.addText(date,{ x:5.3, y:0.5, w:'40%', h:'17%', align:'C', fontSize:32, fontFace:'Century Gothic', color:'00cc00', fill:'FFFFFF', bold: true })
+    welcomeSlide.addImage({path:'./public/images/churchPic.jpg' , x:0.5 , y:1.5 , w:'48%' , h:'32%'})
+    welcomeSlide.addText(title,{ x:0.5, y:4.2, w:'40%', h:'7%', align:'L', fontSize:24, fontFace:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+    welcomeSlide.addText(speaker,{ x:0.5, y:4.6, w:'40%', h:'7%', align:'L', fontSize:24, fontFace:'Arial', color:'00cc00', fill:'FFFFFF', bold: true })
+    welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:5.2 , w:'85%' , h:'25%'})
+  }
+
+  // welcomeSlide.addImage({path:'./public/images/highstreetlogo.png' , x:0.5 , y:5.2 , w:'85%' , h:'25%'})
 
   welcomeSlide.bkgd  = 'ffffff';
   welcomeSlide.color = '000000'
@@ -57,9 +70,13 @@ function createWelcomeSlide(pptx, date, morning, speaker, title) {
   return welcomeSlide
 }
 
-function addInterstitial(pptx){
+function addInterstitial(pptx, format){
   var slide = pptx.addNewSlide();
-  slide.addImage({path:'./public/images/blueCrossBackground.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+  if(format == "colouredCrossBackground"){
+    slide.addImage({path:'./public/images/colouredCross.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+  } else {
+    slide.addImage({path:'./public/images/blueCrossBackground.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
+  }
 }
 
 function addSong(pptx, songObject, backgroundColour, textColour){
@@ -68,7 +85,7 @@ function addSong(pptx, songObject, backgroundColour, textColour){
   let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
   songNameSlide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
-  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour), shadow: {type: "outer", angle: 0, blur: 0, color: "000000", offset: 0, opacity: 0}})
+  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)})
   //divideSongContentIntoSlides(songObject.content)
   divideSongUpIntoSections(pptx, songObject, backgroundColour, textColour)
 }

@@ -47,9 +47,13 @@ export default class CreatePowerpoint extends React.Component {
     that.setState({
       fileName: fileName
     })
+
+    console.log("welcomeSlide", this.props.welcomeSlide)
+    console.log("interstitial", this.props.interstitial)
+
     axios.post('/generatePowerpoint', {
       fileName: fileName,
-      date: this.state.date,
+      date: this.props.date,
       speaker: this.props.speaker,
       title: this.props.title,
       morning: this.props.morning,
@@ -62,6 +66,8 @@ export default class CreatePowerpoint extends React.Component {
       pageNo2: this.props.pageNo2,
       backgroundColour: this.props.backgroundColour,
       textColour: this.props.textColour,
+      welcomeSlide: this.props.welcomeSlide,
+      interstitial: this.props.interstitial,
       songsArray: JSON.stringify(that.props.selectedSongsDetailsArray)
     }).then(function(response){
       that.setState({
@@ -123,6 +129,8 @@ export default class CreatePowerpoint extends React.Component {
           <Formatpanel
             handleChangeBackgroundColour={this.props.handleChangeBackgroundColour.bind(this)} backgroundColour={this.props.backgroundColour}
             handleChangeTextColour={this.props.handleChangeTextColour.bind(this)} textColour={this.props.textColour}
+            handleChangeWelcomeSlide={this.props.handleChangeWelcomeSlide.bind(this)} welcomeSlide={this.props.welcomeSlide}
+            handleChangeInterstitial={this.props.handleChangeInterstitial.bind(this)} interstitial={this.props.interstitial}
           />
         </div>
         <div className="row">
