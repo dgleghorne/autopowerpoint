@@ -24,7 +24,7 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     addInterstitial(pptx)
     addBibleReading(pptx, reading2, reader2, pageNo2)
     addInterstitial(pptx)
-    if(noOfSongs == 4){
+    if(noOfSongs == 4 || noOfSongs == 5){
       addSong(pptx, songsArray[3], backgroundColour, textColour)
       addInterstitial(pptx)
     }
@@ -68,7 +68,7 @@ function addSong(pptx, songObject, backgroundColour, textColour){
   let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
   songNameSlide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
-  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)})
+  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour), shadow: {type: "outer", angle: 0, blur: 0, color: "000000", offset: 0, opacity: 0}})
   //divideSongContentIntoSlides(songObject.content)
   divideSongUpIntoSections(pptx, songObject, backgroundColour, textColour)
 }
