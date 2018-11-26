@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var Utils = require('../components/Utils.jsx')
-const fs = require('fs');
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -43,6 +41,17 @@ router.get('/download/:filename', function(req, res) {
   var file = './public/presentations/' + filename + '.pptx';
   res.download(file); // Set disposition and send it.
 });
+
+router.get('/delete/powerpoints/all', function(req, res){
+    const directory = './public/presentations/';
+    var responseObject = {
+        directory: directory,
+        fileNames: []
+    }
+
+    Utils.deleteAllFromDirectory(directory, responseObject)
+        .then(result => res.status(200).json(result))
+})
 
 //const testFolder = './textFiles/';
 

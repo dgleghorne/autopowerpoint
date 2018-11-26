@@ -1,6 +1,8 @@
 'use strict'
 
 var PptxGenJS = require("../node_modules/pptxgenjs/dist/pptxgen");
+var fs = require('fs');
+var path = require('path')
 
 function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, backgroundColour, textColour, songsArray, noOfSongs, welcomeSlide, interstitial){
     var pptx = new PptxGenJS();
@@ -224,6 +226,20 @@ function convertTextColour(textColour){
   return colour
 }
 
+async function deleteAllFromDirectory(directory, responseObject){
+    fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+        responseObject.fileNames = files
+        for (const file of files) {
+            console.log(file)
+            fs.unlink(path.join(directory, file), err => {
+                if (err) throw err;
+            });
+        }
+    })
+}
+
 var exports = {}
 exports.generate = generate
+exports.deleteAllFromDirectory = deleteAllFromDirectory
 module.exports = exports
