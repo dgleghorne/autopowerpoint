@@ -17,7 +17,7 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     createWelcomeSlide(pptx, date, morning, speaker, title, welcomeSlide)
     addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[0], backgroundColour, textColour)
-    addInterstitial(pptx)
+    addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading1, reader1, pageNo1)
     addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[1], backgroundColour, textColour)
