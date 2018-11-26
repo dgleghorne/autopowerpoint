@@ -1,7 +1,6 @@
 'use strict'
 
 var PptxGenJS = require("../node_modules/pptxgenjs/dist/pptxgen");
-var axios = require('axios')
 
 function generate(fileName, date, morning, speaker, title, reading1, reader1, pageNo1, reading2, reader2, pageNo2, backgroundColour, textColour, songsArray, noOfSongs, welcomeSlide, interstitial){
     var pptx = new PptxGenJS();
@@ -10,9 +9,6 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     pptx.setLayout('LAYOUT_4x3');
 
     songsArray = JSON.parse(songsArray)
-    console.log('songsArray', songsArray)
-    console.log("welcomeSlide", welcomeSlide)
-    console.log("interstitial", interstitial)
 
     createWelcomeSlide(pptx, date, morning, speaker, title, welcomeSlide)
     addInterstitial(pptx, interstitial)
@@ -227,50 +223,6 @@ function convertTextColour(textColour){
   }
   return colour
 }
-
-// function divideSongContentIntoSlides(content){
-//   var lines = content.replace('\f', '').replace('\r', '').replace(/ +(?= )/g,'').split('\n');
-//   console.log("LINES",lines)
-//   var rawSegments = []
-//   for (var i = 2; i < lines.length ; i=i+2) {
-//     rawSegments.push(lines[i] + '\n' + lines[i+1])
-//   }
-//   console.log("SEGMENTS", rawSegments)
-//   console.log("SEGMENTS LENGTH", rawSegments.length)
-//   let segments = []
-//   // rawSegments.forEach((segment)=>{
-//   //   segments.push(cleanSegment(segment))
-//   // })
-//
-//   for(var i = 0; i<=rawSegments.length; i++){
-//     console.log("RAW SEGMENT: ", rawSegments[i])
-//     if(rawSegments[i] != undefined){
-//       let result = cleanSegment(rawSegments[i])
-//       if(result != null && result != undefined){
-//         segments.push(result)
-//       }
-//     }
-//   }
-//
-//   //var nextSegment = segments[segments.length-2].toString()
-//   console.log("SEGMENT LENGTH: ", segments.length);
-//   for(var i = 0; i < segments.length; i++){
-//     // var segment = segments[i].replace('\f', '').replace('\r', '')
-//     // if(!(segment == '\nundefined') && !(segment.includes("CCLI"))){
-//       console.log("SEGMENT " + i + ": ", segments[i])
-//       var slide = pptx.addNewSlide();
-//       if(i == segments.length-1){
-//         console.log("ADD CCLI " + i + ": ", segments[i])
-//         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-//         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-//         slide.addText("CCLI 128675", { x:0.9, y:5.1, w:'64%', h:'5%', align:'L', fontSize:14, fontFace:'Times New Roman', color:'ffffff'}) //, fill: '000080'})
-//       } else{
-//         slide.addImage({path:'./public/images/Navy-Blue-Plain-Backgrounds.jpg', x:0.0, y:0.0, w:'100%', h: '100%'})
-//         slide.addText(segments[i], { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color:'ffffff'}) //, fill: '000080'})
-//       }
-//     // }
-//   }
-//}
 
 var exports = {}
 exports.generate = generate

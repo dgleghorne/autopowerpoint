@@ -1,14 +1,10 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import Datepanel from './datepanel.jsx'
 import Titlepanel from './titlepanel.jsx'
 import Readingspanel from './readingspanel.jsx'
 import Songspanel from './songspanel.jsx'
 import Formatpanel from './formatpanel.jsx'
 import axios from 'axios'
-import Utils from './Utils.jsx'
-const FileDownload = require('js-file-download'); //May not be necessary
-const downloader = require('file-downloader')  //May not be necessary
 
 export default class CreatePowerpoint extends React.Component {
   constructor(props) {
