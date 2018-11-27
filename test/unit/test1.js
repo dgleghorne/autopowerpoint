@@ -1,6 +1,8 @@
 'use strict'
-var chai = require("chai")
-var expect = chai.expect
+// var chai = require("chai")
+// var expect = chai.expect
+
+import {expect} from 'chai'
 
 describe("Given", () => {
     describe("When", () => {
