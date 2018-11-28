@@ -27,6 +27,7 @@
     "pug": "~2.0.0-beta11",
     "react": "^15.6.1",
     "react-bootstrap-table": "^4.0.2",
+    "react-color": "^2.14.1",
     "react-dom": "^15.6.1",
     "react-file-download": "^0.3.4",
     "serve-favicon": "~2.4.2",

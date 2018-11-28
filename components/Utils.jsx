@@ -10,20 +10,23 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
 
     songsArray = JSON.parse(songsArray)
 
+    backgroundColour = backgroundColour.replace("#","")
+    textColour = textColour.replace("#","")
+
     createWelcomeSlide(pptx, date, morning, speaker, title, welcomeSlide)
     addInterstitial(pptx, interstitial)
     addSong(pptx, songsArray[0], backgroundColour, textColour)
     addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading1, reader1, pageNo1)
     addInterstitial(pptx, interstitial)
-    addSong(pptx, songsArray[1], backgroundColour, textColour)
+    addSong(pptx, songsArray[0], backgroundColour, textColour)
     addInterstitial(pptx, interstitial)
-    addSong(pptx, songsArray[2], backgroundColour, textColour)
+    addSong(pptx, songsArray[0], backgroundColour, textColour)
     addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading2, reader2, pageNo2)
     addInterstitial(pptx, interstitial)
     if(noOfSongs == 4 || noOfSongs == 5){
-      addSong(pptx, songsArray[3], backgroundColour, textColour)
+      addSong(pptx, songsArray[0], backgroundColour, textColour)
       addInterstitial(pptx, interstitial)
     }
     if(noOfSongs == 5){
@@ -80,9 +83,8 @@ function addSong(pptx, songObject, backgroundColour, textColour){
   console.log("add song songObject", songObject)
   let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
-  songNameSlide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
-  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)})
-  //divideSongContentIntoSlides(songObject.content)
+  songNameSlide.back = backgroundColour
+  songNameSlide.addText(songTitle,{ x:0.5, y:0.7, w:'90%', h:'70%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: textColour})
   divideSongUpIntoSections(pptx, songObject, backgroundColour, textColour)
 }
 
@@ -180,48 +182,12 @@ function addSectionsToSlides(pptx, sectionArray, CCLI, backgroundColour, textCol
   console.log("addSectionsToSlides")
   sectionArray.forEach((section, i, array)=> {
     var slide = pptx.addNewSlide();
-    slide.addImage({path: convertBackgroundColour(backgroundColour), x:0.0, y:0.0, w:'100%', h: '100%'})
-    slide.addText(section, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: convertTextColour(textColour)}) //, fill: '000080'})
+      slide.back = backgroundColour
+    slide.addText(section, { x:0.3, y:0.1, w:'95%', h:'98%', align:'C', fontSize:66, fontFace:'Arial Rounded MT Bold', color: textColour}) //, fill: '000080'})
     if(i == array.length-1){
-      slide.addText(CCLI, { x:0.9, y:6.1, w:'64%', h:'5%', align:'L', fontSize:14, fontFace:'Times New Roman', color:convertTextColour(textColour)}) //, fill: '000080'})
+      slide.addText(CCLI, { x:0.9, y:6.1, w:'64%', h:'5%', align:'L', fontSize:14, fontFace:'Times New Roman', color: textColour}) //, fill: '000080'})
     }
   })
-}
-
-function convertBackgroundColour(backgroundColour){
-  var background
-  switch(backgroundColour) {
-      case "darkBlue":
-          background = './public/images/Navy-Blue-Plain-Backgrounds.jpg'
-          break;
-      case "lightSkyBlue":
-            background = './public/images/light-sky-blue-solid-color-background.jpg'
-          break;
-      case "white":
-          background = './public/images/plain-white-background.jpg'
-          break;
-      default:
-          background = './public/images/Navy-Blue-Plain-Backgrounds.jpg'
-  }
-  return background
-}
-
-function convertTextColour(textColour){
-  var colour
-  switch(textColour) {
-      case "white":
-          colour = 'ffffff'
-          break;
-      case "black":
-            colour = '000000'
-          break;
-      case "yellow":
-          colour = 'ffff00'
-          break;
-      default:
-          colour = 'ffffff'
-  }
-  return colour
 }
 
 var exports = {}

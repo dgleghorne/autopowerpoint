@@ -24,8 +24,8 @@ export default class Index extends React.Component {
           selectedSongsArray: [],
           selectedSongsDetailsArray: [],
           screen: "CreatePowerpoint",
-          backgroundColour: "white",
-          textColour: "black",
+          backgroundColour: "#ffffff",
+          textColour: "#000000",
           interstitial: "colouredCrossBackground",
           welcomeSlide: "colouredCross"
         }
@@ -154,13 +154,13 @@ export default class Index extends React.Component {
 
     handleChangeBackgroundColour(value){
       this.setState({
-        backgroundColour: value
+        backgroundColour: value.hex
       })
     }
 
     handleChangeTextColour(value){
       this.setState({
-        textColour: value
+        textColour: value.hex
       })
     }
 

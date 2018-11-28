@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+.panel-body {
+  background: #D9E3F0
+}
+
+.circle-picker{
+  margin-top: 14px;
+}

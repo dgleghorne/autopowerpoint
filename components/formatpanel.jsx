@@ -2,24 +2,19 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import { CirclePicker } from 'react-color';
 
 export default class Formatpanel extends React.Component {
     constructor(props) {
         super(props);
     }
 
-
     handleChangeBackgroundColour(e){
-      this.props.handleChangeBackgroundColour(e.target.id)
-      let selectboxes = document.getElementsByClassName("selectbox")
-      for (var i = 0; i < selectboxes.length; i++) {
-        selectboxes[i].style.border = "1px solid #dddddd"
-      }
-      document.getElementById(e.target.id + "Parent").style.border = "1px solid #333"
+      this.props.handleChangeBackgroundColour(e)
     }
 
     handleChangeTextColour(e){
-      this.props.handleChangeTextColour(e.target.value)
+      this.props.handleChangeTextColour(e)
     }
 
     handleChangeInterstitial(e){
@@ -40,17 +35,23 @@ export default class Formatpanel extends React.Component {
             <div className="col-md-3">
               <label htmlFor="backgroundColourInput">Background Colour</label>
               <br/>
-              <div className="selectbox" id="darkBlueParent" style={{ border: "1px solid #dddddd", display: "inline-block", cursor: "pointer"}}><span id="darkBlue" style={{backgroundColor:"darkBlue", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>
-              <div className="selectbox" id="lightSkyBlueParent" style={{ border: "1px solid #dddddd", display: "inline-block", cursor: "pointer"}}><span id="lightSkyBlue" style={{backgroundColor:"lightSkyBlue", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>
-              <div className="selectbox" id="whiteParent" style={{ border: "1px solid #333", display: "inline-block", cursor: "pointer"}}><span id="white" style={{backgroundColor:"white", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>
+              {/*<div className="selectbox" id="darkBlueParent" style={{ border: "1px solid #dddddd", display: "inline-block", cursor: "pointer"}}><span id="darkBlue" style={{backgroundColor:"darkBlue", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>*/}
+              {/*<div className="selectbox" id="lightSkyBlueParent" style={{ border: "1px solid #dddddd", display: "inline-block", cursor: "pointer"}}><span id="lightSkyBlue" style={{backgroundColor:"lightSkyBlue", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>*/}
+              {/*<div className="selectbox" id="whiteParent" style={{ border: "1px solid #333", display: "inline-block", cursor: "pointer"}}><span id="white" style={{backgroundColor:"white", padding: "10px",  border: "2px solid #fff",  display: "inline-block", verticalAlign: "middle"}} onClick={this.handleChangeBackgroundColour.bind(this)}></span></div>*/}
+            <CirclePicker
+                color={ this.props.backgroundColour }
+                onChangeComplete={ this.handleChangeBackgroundColour.bind(this)}
+                colors = {["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#ffffff", "#607d8b"]}
+            />
             </div>
             <div className="col-md-3">
               <label htmlFor="textColourInput">Text Colour</label>
-              <select id="textColourInput" className="form-control" style={{background: this.props.backgroundColour, color: this.props.textColour}} value={this.props.textColour} onChange={this.handleChangeTextColour.bind(this)}>
-                <option value="white" style={{background: this.props.backgroundColour, color: "white"}}>White</option>
-                <option value="black" style={{background: this.props.backgroundColour, color: "black"}}>Black</option>
-                <option value="yellow" style={{background: this.props.backgroundColour, color: "yellow"}} >Yellow</option>
-              </select>
+              <input type='text'className="form-control"  value="Preview Text" id="textColourInput" readOnly style={{background: this.props.backgroundColour, color: this.props.textColour}}></input>
+              <CirclePicker
+                color={ this.props.textColour }
+                onChangeComplete={ this.handleChangeTextColour.bind(this)}
+                colors = {["#000000", "#ffffff", "#C00000", "#ff0000", "#FFC000", "#ffff00", "#92D050", "#00B050", "#00B0F0", "#0070C0", "#002060", "#7030A0"]}
+              />
             </div>
             <div className="col-md-3">
               <label htmlFor="interstitialInput">Interstitial</label>
