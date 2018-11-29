@@ -199,7 +199,7 @@ export default class AddEditSong extends React.Component {
               verses: data[0].verses,
               CCLI: data[0].CCLI,
               position: data[0].position,
-              selectedSongId: data[0].id
+              selectedSongId: data[0]._id
             })
             this.getVerseContents(data[0].verses)
           }
@@ -269,7 +269,7 @@ export default class AddEditSong extends React.Component {
 
   deleteSongFromDB(){
       let that = this
-      let url = '/songs/remove/id' + this.state.selectedSongId
+      let url = '/songs/remove/id/' + this.state.selectedSongId
       let deletedSongTitle = this.state.title
       console.log("url",url);
       $.ajax({
@@ -288,7 +288,6 @@ export default class AddEditSong extends React.Component {
                   songArray: [],
                   songTypeSelection: 'na',
                   selectedSong: 'na',
-                  songTypeArray: songTypeArray,
                   errorMsg: "",
                   errorStyle: "",
                   successMsg: "",
