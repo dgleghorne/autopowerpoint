@@ -39,10 +39,6 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
 
 }
 
-function saveCallback(filename) {
-	 console.log('Good News Everyone!  File created: '+ filename);
-}
-
 function createWelcomeSlide(pptx, date, morning, speaker, title, format) {
   var welcomeSlide = pptx.addNewSlide();
 
@@ -79,8 +75,6 @@ function addInterstitial(pptx, format){
 }
 
 function addSong(pptx, songObject, backgroundColour, textColour){
-  console.log("ADD SONG")
-  console.log("add song songObject", songObject)
   let songTitle =  songObject.title
   var songNameSlide = pptx.addNewSlide();
   songNameSlide.back = backgroundColour
@@ -109,37 +103,12 @@ function addCoffee(pptx){
   slide.addText("...Everyone welcome!", {x:0.1, y:3.0, w:'60%', h:'20%', align: 'L', fontSize: 32, fontFace:'Arial', color: '000000', bold: true})
 }
 
-function cleanSegment(segment){
-  var segmentRpl = segment.replace('\f', '').replace('\r', '')
-  if(!(segmentRpl == '\nundefined') && !(segmentRpl.includes("CCLI")) && segmentRpl != undefined){
-    return segmentRpl
-  }else {
-    return null
-  }
-}
-
 function splitLinesIntoSections(linesArray){
-  console.log("splitLinesIntoSections")
   let sections = []
-  console.log("linesArray.length", linesArray.length)
 
   for(let i = 0; i < linesArray.length; i=i+2){
-    console.log("linesArray[i]", linesArray[i])
-    console.log("linesArray[i+1]", linesArray[i+1])
     let lineA = linesArray[i] != undefined ? linesArray[i] : ""
     let lineB = linesArray[i+1] != undefined ? linesArray[i+1] : ""
-    sections.push(lineA  + '\n' +  lineB)
-  }
-  return sections
-}
-
-function splitChorusIntoSections(chorus){
-  console.log("splitChorusIntoSections")
-  let sections = []
-  let chorusLineArray = chorus.split('\n')
-  for(let i = 0; i < chorusLineArray.length; i=i+2){
-    let lineA = chorusLineArray[i] != undefined ? chorusLineArray[i] : ""
-    let lineB = chorusLineArray[i+1] != undefined ? chorusLineArray[i+1] : ""
     sections.push(lineA  + '\n' +  lineB)
   }
 
@@ -147,39 +116,37 @@ function splitChorusIntoSections(chorus){
 }
 
 function divideSongUpIntoSections(pptx,songObject, backgroundColour, textColour){
-  console.log("divideSongUpIntoSections")
   let sectionArray = []
-  console.log(songObject)
+
   if(songObject.chorus.length == 0){
-    songObject.verses.forEach((verse)=>{
-      let sectionsFromVerse = splitLinesIntoSections(verse.lines)
-      console.log("sectionsFromVerse", sectionsFromVerse)
-      sectionsFromVerse.forEach((section) => {
-        section = section.replace('\f', '')
-        sectionArray.push(section)
+      songObject.verses.forEach((verse)=>{
+        let sectionsFromVerse = splitLinesIntoSections(verse.lines)
+        addSectionsToSectionArray(sectionsFromVerse, sectionArray)
       })
-    })
-    console.log("COMPLETED DIVISION - sectionArray: ", sectionArray)
   } else {
-    songObject.verses.forEach((verse)=>{
-      let sectionsFromVerse = splitLinesIntoSections(verse.lines)
-      sectionsFromVerse.forEach((section) => {
-        section = section.replace('\f', '')
-        sectionArray.push(section)
+      let sectionsFromChorus = splitLinesIntoSections(songObject.chorus.split('\n'))
+
+      if(songObject.position === "before"){
+          addSectionsToSectionArray(sectionsFromChorus, sectionArray)
+      }
+
+      songObject.verses.forEach((verse)=>{
+        let sectionsFromVerse = splitLinesIntoSections(verse.lines)
+          addSectionsToSectionArray(sectionsFromVerse, sectionArray)
+          addSectionsToSectionArray(sectionsFromChorus, sectionArray)
       })
-      let sectionsFromChorus = splitChorusIntoSections(songObject.chorus)
-      sectionsFromChorus.forEach((section) => {
-        section = section.replace('\f', '')
-        sectionArray.push(section)
-      })
-    })
   }
-  console.log("HERE", sectionArray)
   addSectionsToSlides(pptx, sectionArray, songObject.CCLI, backgroundColour, textColour)
 }
 
+function addSectionsToSectionArray(sectionsFromStanza, sectionArray) {
+    sectionsFromStanza.forEach((section) => {
+        section = section.replace('\f', '')
+        sectionArray.push(section)
+    })
+}
+
 function addSectionsToSlides(pptx, sectionArray, CCLI, backgroundColour, textColour){
-  console.log("addSectionsToSlides")
   sectionArray.forEach((section, i, array)=> {
     var slide = pptx.addNewSlide();
       slide.back = backgroundColour

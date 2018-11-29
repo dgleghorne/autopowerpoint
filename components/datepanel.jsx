@@ -60,12 +60,12 @@ export default class Datepanel extends React.Component {
                 </div>
             </div>
             <div className="col-md-3">
-                <label htmlFor="morningToggle">AM/PM</label>
+                <label htmlFor="morningToggle">Morning/Evening</label>
                 <div className='row'>
                     <div className="col-md-12">
                         <Toggle
-                            on="AM"
-                            off="PM"
+                            on="Morning"
+                            off="Evening"
                             active={this.props.morning}
                             onClick={this.handleChangeMorning.bind(this)}
                         />

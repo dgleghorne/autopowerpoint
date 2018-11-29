@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import axios from 'axios'
+import Toggle from 'react-bootstrap-toggle';
+import "react-bootstrap-toggle/dist/bootstrap2-toggle.css";
 
 export default class AddEditSong extends React.Component {
   constructor(props) {
@@ -97,6 +99,12 @@ export default class AddEditSong extends React.Component {
     verses[i] = e.target.value
     this.setState({
       verseContents: verses
+    })
+  }
+
+  changePosition(e){
+    this.setState({
+        position: e === true ? "before" : ""
     })
   }
 
@@ -251,49 +259,83 @@ export default class AddEditSong extends React.Component {
           <h2>Add/Edit Song</h2>
         </div>
         <div className="row">
-          <div className="col-md-3">
-            <label htmlFor="songTypeInput">Type</label>
-            <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.returnAllSongsByType.bind(this)}>
-              <option value="na">--Please select song type--</option>
-                {
-                  this.state.songTypeArray.map(function(song) {
-                    return <option key={song.id}
-                      value={song.type}>{song.type}</option>;
-                  })
-                }
-            </select>
+          <div className="panel panel-primary">
+              <div className="panel-heading">
+                  <h3 className="panel-title">Select Song</h3>
+              </div>
+              <div className="panel-body">
+                  <div className="col-md-3">
+                      <label htmlFor="songTypeInput">Type</label>
+                      <select className="form-control" id="songTypeInput" value={this.state.songTypeSelection} onChange={this.returnAllSongsByType.bind(this)}>
+                          <option value="na">--Please select song type--</option>
+                          {
+                              this.state.songTypeArray.map(function(song) {
+                                  return <option key={song.id}
+                                                 value={song.type}>{song.type}</option>;
+                              })
+                          }
+                      </select>
+                  </div>
+                  <div className="col-md-6">
+                      <label htmlFor="songTitleInput">Title (leave at default to add a new song)</label>
+                      <select className="form-control" id="songTitleInput"value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
+                          <option value="na">--Select Song Type First--</option>
+                          {
+                              this.state.songArray.sort(this.compareSongs).map(function(song) {
+                                  return <option key={song.id}
+                                                 value={song.title}>{song.title}</option>;
+                              })
+                          }
+                      </select>
+                  </div>
+              </div>
           </div>
-          <div className="col-md-6">
-            <label htmlFor="songTitleInput">Title</label>
-            <select className="form-control" id="songTitleInput"value={this.state.selectedSong} onChange={this.handleChangeSongTitle.bind(this)}>
-              <option value="na">--Select Song Type First--</option>
-                {
-                  this.state.songArray.sort(this.compareSongs).map(function(song) {
-                    return <option key={song.id}
-                      value={song.title}>{song.title}</option>;
-                  })
-                }
-            </select>
+        </div>
+        <div className="row">
+            <div className="panel panel-primary">
+                <div className="panel-heading">
+                    <h3 className="panel-title">Edit Song</h3>
+                </div>
+                <div className="panel-body">
+                    <div className="col-md-12">
+                        <label htmlFor="title">New Title:</label>
+                        <textarea className="form-control" rows="1" id="title" value={this.state.title} onChange={this.changeTitle.bind(this)}></textarea>
+                        <label htmlFor="verse0">Verses:</label>
+                        {this.displayVerseBoxes()}
+                        <label htmlFor="chorus">Chorus:</label>
+                        <div className="row">
+                            <div className="col-md-8">
+                              <textarea className="form-control" rows="5" id="chorus" value={this.state.chorus} onChange={this.changeChorus.bind(this)}></textarea>
+                            </div>
+                            <div className="col-md-4">
+                              <label htmlFor="chorusPositionToggle">Chorus Frequency (will always show after each verse)</label>
+                              <div className='row'>
+                                <div className="col-md-12">
+                                    <Toggle
+                                        on="Show Before First Verse Too"
+                                        off="Show After Each Verse Only"
+                                        active={this.state.position === "before" ? true : false}
+                                        onClick={this.changePosition.bind(this)}
+                                    />
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <label htmlFor="CCLI">CCLI:</label>
+                        <textarea className="form-control" rows="1" id="CCLI" value={this.state.CCLI} onChange={this.changeCCLI.bind(this)}></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className="row">
+          <div className="col-md-offset-11">
+              <button type="button" className="btn btn-primary" onClick={this.saveSong.bind(this)}>Save</button>
           </div>
         </div>
         <div className="row">
           <div className="col-md-12">
-            <label htmlFor="title">New Title:</label>
-            <textarea className="form-control" rows="1" id="title" value={this.state.title} onChange={this.changeTitle.bind(this)}></textarea>
-            <label htmlFor="verse0">Verses:</label>
-            {this.displayVerseBoxes()}
-            <label htmlFor="chorus">Chorus:</label>
-            <textarea className="form-control" rows="5" id="chorus" value={this.state.chorus} onChange={this.changeChorus.bind(this)}></textarea>
-            <label htmlFor="CCLI">CCLI:</label>
-            <textarea className="form-control" rows="1" id="CCLI" value={this.state.CCLI} onChange={this.changeCCLI.bind(this)}></textarea>
-            <br/>
-            <button type="button" className="btn btn-primary" onClick={this.saveSong.bind(this)}>Save</button>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <h3 className={this.state.errorStyle} role="alert">{this.state.errorMsg}</h3>
-              <h3 className={this.state.succesStyle} role="alert">{this.state.successMsg}</h3>
-            </div>
+            <h3 className={this.state.errorStyle} role="alert">{this.state.errorMsg}</h3>
+            <h3 className={this.state.succesStyle} role="alert">{this.state.successMsg}</h3>
           </div>
         </div>
       </div>
