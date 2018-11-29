@@ -9,8 +9,8 @@ export default class AddEditSong extends React.Component {
       super(props);
       var songTypeArray = [
          {id: 1, type:"IPH"},
-        //  {id: 2, type:"Psalms"},
-        //  {id: 3, type:"Paraphrases"},
+         {id: 2, type:"Psalms"},
+         {id: 3, type:"Paraphrases"},
          {id: 4, type:"Other"}
       ]
       this.state = {
@@ -193,7 +193,8 @@ export default class AddEditSong extends React.Component {
               title: data[0].title,
               chorus: data[0].chorus,
               verses: data[0].verses,
-              CCLI: data[0].CCLI
+              CCLI: data[0].CCLI,
+              position: data[0].position
             })
             this.getVerseContents(data[0].verses)
           }

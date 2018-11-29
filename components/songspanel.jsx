@@ -11,8 +11,8 @@ export default class Songspanel extends React.Component {
 
         var songTypeArray = [
            {id: 1, type:"IPH"},
-          //  {id: 2, type:"Psalms"},
-          //  {id: 3, type:"Paraphrases"},
+           {id: 2, type:"Psalms"},
+           {id: 3, type:"Paraphrases"},
            {id: 4, type:"Other"}
         ]
 
@@ -21,7 +21,6 @@ export default class Songspanel extends React.Component {
           selectedSong: 'na',
           songArray: [],
           songTypeArray: songTypeArray,
-          newSongTextarea: ""
         }
     }
 
@@ -30,9 +29,7 @@ export default class Songspanel extends React.Component {
       let length = songArray.length
       let noOfSongs = this.props.noOfSongs
       let idNo = this.props.idNo
-      console.log("IDNo Props1: ", idNo)
       idNo++
-      console.log("IDNo Props2: ", idNo)
       let selectedSong = JSON.parse(this.state.selectedSong)
       var song = {id: idNo, title: selectedSong.title}
       if(length >= noOfSongs){
@@ -46,20 +43,13 @@ export default class Songspanel extends React.Component {
     }
 
     getSongDetails(song){
-      let that = this
-      let selectedSongsArray = this.props.selectedSongsArray
       let selectedSongsDetailsArray = this.props.selectedSongsDetailsArray
-      console.log("selectedSongsDetailsArray INITIAL", selectedSongsDetailsArray )
-      console.log(song)
       $.ajax({
           url: '/songs/find/' + song.title,
             type: 'GET',
             cache: false,
             success: (data) => {
-              console.log("DATA", data[0])
-              console.log("selectedSongsDetailsArray BEFORE", selectedSongsDetailsArray )
               selectedSongsDetailsArray.push(data[0])
-              console.log("selectedSongsDetailsArray AFTER", selectedSongsDetailsArray )
             }
         })
       this.props.handleChangeSongsDetailsArrayParent(selectedSongsDetailsArray)
@@ -111,12 +101,6 @@ export default class Songspanel extends React.Component {
       })
     }
 
-    handleChangeNewSongTextarea(e){
-      this.setState({
-        newSongTextarea: e.target.value
-      })
-    }
-
     handleChangeNoOfSongs(e){
       this.props.handleChangeNoOfSongsParent(e.target.value)
     }
@@ -158,10 +142,6 @@ export default class Songspanel extends React.Component {
                   <option value="5">5</option>
                 </select>
               </div>
-              {/*<div className="col-md-3">
-                <label htmlFor="addNewSong"></label>
-                <button type="submit" className="btn btn-primary btn-block" id="addNewSong" data-toggle="modal" data-target="#newSongModal">Add New Song to DB <span className="glyphicon glyphicon-circle-arrow-up"></span></button>
-              </div>*/}
             </div>
           <br/>
             <div className="row">
