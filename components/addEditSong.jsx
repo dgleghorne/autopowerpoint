@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import axios from 'axios'
 import Toggle from 'react-bootstrap-toggle';
 import "react-bootstrap-toggle/dist/bootstrap2-toggle.css";
+import Modal from 'react-modal';
 
 export default class AddEditSong extends React.Component {
   constructor(props) {
@@ -28,6 +29,9 @@ export default class AddEditSong extends React.Component {
         errorStyle: "",
         successMsg: "",
         succesStyle: "",
+        selectedSongId: "",
+          modalIsOpen: false,
+          modalMessage: ""
       }
   }
 
@@ -194,7 +198,8 @@ export default class AddEditSong extends React.Component {
               chorus: data[0].chorus,
               verses: data[0].verses,
               CCLI: data[0].CCLI,
-              position: data[0].position
+              position: data[0].position,
+              selectedSongId: data[0].id
             })
             this.getVerseContents(data[0].verses)
           }
@@ -250,10 +255,76 @@ export default class AddEditSong extends React.Component {
       })
     }
   }
+
+  openModal() {
+      this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+      this.setState({
+          modalIsOpen: false,
+          modalMessage: ""
+      });
+  }
+
+  deleteSongFromDB(){
+      let that = this
+      let url = '/songs/remove/id' + this.state.selectedSongId
+      let deletedSongTitle = this.state.title
+      console.log("url",url);
+      $.ajax({
+          url: url,
+          type: 'DELETE',
+          cache: false,
+          success: (data) => {
+              console.log("DATA", data)
+              that.setState({
+                  title: "",
+                  CCLI: "CCLI 128675",
+                  chorus: "",
+                  verses: [],
+                  position: "",
+                  verseContents: [""],
+                  songArray: [],
+                  songTypeSelection: 'na',
+                  selectedSong: 'na',
+                  songTypeArray: songTypeArray,
+                  errorMsg: "",
+                  errorStyle: "",
+                  successMsg: "",
+                  succesStyle: "",
+                  selectedSongId: "",
+                  modalMessage: deletedSongTitle + " has been deleted from the database"
+              })
+          },
+          error: (err) => {
+              that.setState({
+                  modalMessage: deletedSongTitle + " has failed to delete from the database"
+              })
+          }
+      })
+  }
+
+
 //value={this.state.songTypeSelection} onChange={this.handleChangeSongType.bind(this)}
 //                <button className="btn btn-primary" type="button" onClick={this.returnSongs.bind(this)}>Update</button>
 
   render(){
+
+      const modalStyles = {
+          content : {
+              top                   : '50%',
+              left                  : '50%',
+              right                 : '70%',
+              bottom                : 'auto',
+              marginRight           : '-50%',
+              transform             : 'translate(-50%, -50%)',
+              border: "0px",
+              background: ""
+
+          }
+      };
+
     return(
       <div className="container-fluid">
         <div className="row">
@@ -288,6 +359,10 @@ export default class AddEditSong extends React.Component {
                               })
                           }
                       </select>
+                  </div>
+                  <div className="col-md-3 ">
+                      <label htmlFor="deleteSongButton">Delete Song</label>
+                      <button className="btn btn-danger btn-block" id="deleteSongButton" onClick={this.openModal.bind(this)} disabled={this.state.selectedSongId === ""}>Delete This Song</button>
                   </div>
               </div>
           </div>
@@ -339,6 +414,58 @@ export default class AddEditSong extends React.Component {
             <h3 className={this.state.succesStyle} role="alert">{this.state.successMsg}</h3>
           </div>
         </div>
+          <div>
+              <Modal
+                isOpen={this.state.modalIsOpen}
+                onRequestClose={this.closeModal.bind(this)}
+                style={modalStyles}
+                contentLabel="Example Modal"
+              >
+                  <div className="panel panel-primary">
+                      <div className="panel-heading">
+                          <h3 className="panel-title">Deletion Confirmation</h3>
+                      </div>
+                      <div className="panel-body">
+                          {this.state.modalMessage === "" ?
+                              <div>
+                                  <div className="row">
+                                      <div className="col-md-offset-1 col-md-11">
+                                          <p>Do you want to delete this song from the database?</p>
+                                      </div>
+                                  </div>
+                                  <div className="row">
+                                      <div className="col-md-offset-2 col-md-3">
+                                          <button type="button" className="btn btn-danger"
+                                                  onClick={this.deleteSongFromDB.bind(this)}>Delete
+                                          </button>
+                                      </div>
+                                      <div className="col-md-offset-1 col-md-3">
+                                          <button type="button" className="btn btn-primary"
+                                                  onClick={this.closeModal.bind(this)}>Cancel
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div> :
+                              <div>
+                                  <div className="row">
+                                      <div className="col-md-offset-1 col-md-11">
+                                          <p>{this.state.modalMessage}</p>
+                                      </div>
+                                  </div>
+                                  <div className="row">
+                                      <div className="col-md-offset-4 col-md-3">
+                                          <button type="button" className="btn btn-primary"
+                                                  onClick={this.closeModal.bind(this)}>Close
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          }
+                      </div>
+                  </div>
+
+              </Modal>
+          </div>
       </div>
     )
   }

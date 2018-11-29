@@ -58,6 +58,14 @@ router.delete('/remove/:title', function (req, res) {
   })
 });
 
+//Delete songs by id
+router.delete('/remove/id/:id', function (req, res) {
+    Song.remove({title: req.params.id}, function(err, songs){
+        if(err){return next(err)}
+        res.send('Song with id: '+ req.params.id +' has been deleted');
+    })
+});
+
 //Update song by title
 router.post('/update/:title', function(req, res, next){
   var update = {
