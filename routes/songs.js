@@ -50,6 +50,14 @@ router.get('/find/:title', function(req, res){
   })
 })
 
+//return song by id
+router.get('/find/:id', function(req, res){
+    Song.find({_id: req.params.id },function(err, songs){
+        if(err){return next(err)}
+        res.json(songs)
+    })
+})
+
 //Delete songs by title
 router.delete('/remove/:title', function (req, res) {
   Song.remove({title: req.params.title}, function(err, songs){

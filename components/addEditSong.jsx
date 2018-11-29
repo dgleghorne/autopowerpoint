@@ -359,10 +359,10 @@ export default class AddEditSong extends React.Component {
                           }
                       </select>
                   </div>
-                  <div className="col-md-3 ">
-                      <label htmlFor="deleteSongButton">Delete Song</label>
-                      <button className="btn btn-danger btn-block" id="deleteSongButton" onClick={this.openModal.bind(this)} disabled={this.state.selectedSongId === ""}>Delete This Song</button>
-                  </div>
+                  {/*<div className="col-md-3 ">*/}
+                      {/*<label htmlFor="deleteSongButton">Delete Song</label>*/}
+                      {/*<button className="btn btn-danger btn-block" id="deleteSongButton" onClick={this.openModal.bind(this)} disabled={this.state.selectedSongId === ""}>Delete This Song</button>*/}
+                  {/*</div>*/}
               </div>
           </div>
         </div>
