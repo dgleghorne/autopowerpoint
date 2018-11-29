@@ -22,6 +22,10 @@ module.exports = {
             },
             { test: /\.xml$/,
               loader: 'xml-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
             }
         ]
     },

@@ -18,3 +18,20 @@ a {
 thead{
   background: #ABB8C3;
 }
+
+.DayPickerInput{
+  width: 100%;
+}
+
+.datePickerInputGroupAddon{
+  padding: 8px 1px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-left: 0;
+  border-radius: 0px 4px 4px 0px;
+}

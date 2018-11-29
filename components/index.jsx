@@ -7,10 +7,10 @@ import AddEditSong from './addEditSong.jsx'
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
-        var today = this.getToday()
+        // var today = this.getToday()
 
         this.state = {
-          date: today,
+          date: new Date(),
           speaker: "<Insert Speaker's Name Here>",
           title: "<Insert Title Here>",
           morning: true,
@@ -31,11 +31,11 @@ export default class Index extends React.Component {
         }
     }
 
-    getToday(){
-      var today = new Date()
-      today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
-      return this.formatDate(today)
-    }
+    // getToday(){
+    //   var today = new Date()
+    //   today = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear()
+    //   return this.formatDate(today)
+    // }
 
     resetForm(){
       console.log("RESET FORM Parent")
@@ -63,27 +63,54 @@ export default class Index extends React.Component {
     }
 
     formatDate(date){
-      let splitDate = date.split('-')
-      let d = new Date(splitDate[2]+'-'+splitDate[1]+'-'+splitDate[0])
-      let dateNo = splitDate[0]
-      let weekDayNo = d.getDay()
-      let month = splitDate[1]
-      let year = splitDate[2]
-      var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-      var months = ["","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-      let weekDay = days[weekDayNo]
-      let monthWord = months[month]
-      let ordinal = "th"
-      if(dateNo == 1){
-        ordinal = "st"
-      }
-      if(dateNo == 2){
-        ordinal = "nd"
-      }
-      if(dateNo == 3){
-        ordinal = "rd"
-      }
-      return weekDay + " " + dateNo + ordinal + " " + monthWord + " " + year
+        let month = date.getMonth()
+        let year = date.getFullYear()
+        let dayInMonth = date.getDate()
+        let dayInWeek = date.getDay()
+
+        return this.convertDayToString(dayInWeek) + " " + dayInMonth + this.returnOrdinalModifier(dayInMonth) + " " + this.convertMonthToString(month) + " " + year
+    }
+
+    returnOrdinalModifier(day){
+        switch (day) {
+            case 1: return "st"
+            case 21: return "st"
+            case 31: return "st"
+            case 2: return "nd"
+            case 22: return "nd"
+            case 3: return "rd"
+            case 23: return "rd"
+            default: return "th"
+        }
+    }
+
+    convertDayToString(dayValue){
+        switch (dayValue) {
+            case 0: return "Sunday"
+            case 1: return "Monday"
+            case 2: return "Tuesday"
+            case 3: return "Wednesday"
+            case 4: return "Thursday"
+            case 5: return "Friday"
+            case 6: return "Saturday"
+        }
+    }
+
+    convertMonthToString(month){
+        switch (month) {
+            case 0: return "January"
+            case 1: return "February"
+            case 2: return "March"
+            case 3: return "April"
+            case 4: return "May"
+            case 5: return "June"
+            case 6: return "July"
+            case 7: return "August"
+            case 8: return "September"
+            case 9: return "October"
+            case 10: return "November"
+            case 11: return "December"
+        }
     }
 
     handleChangeSpeakerParent(speaker){
@@ -242,6 +269,7 @@ export default class Index extends React.Component {
                   handleChangeTextColour={this.handleChangeTextColour.bind(this)}
                   handleChangeInterstitial={this.handleChangeInterstitial.bind(this)}
                   handleChangeWelcomeSlide={this.handleChangeWelcomeSlide.bind(this)}
+                  formatDate={this.formatDate.bind(this)}
                   /> : null}
                   {this.state.screen == "Add/EditSong" ? <AddEditSong/> : null }
                   {this.state.screen == "Announcements" ? <p>Announcements</p> : null }

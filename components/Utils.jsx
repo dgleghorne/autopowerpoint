@@ -33,7 +33,7 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
       addSong(pptx, songsArray[4], backgroundColour, textColour)
       addInterstitial(pptx, interstitial)
     }
-    addCoffee(pptx)
+    if(morning) {addCoffee(pptx)}
 
     pptx.save('./public/presentations/' + fileName)
 

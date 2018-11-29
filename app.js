@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bs', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 app.use('/fa', express.static(path.join(__dirname, 'node_modules/font-awesome')));
+app.use('/react-day-picker', express.static(path.join(__dirname, 'node_modules/react-day-picker')));
 
 app.use('/', index);
 app.use('/users', users);

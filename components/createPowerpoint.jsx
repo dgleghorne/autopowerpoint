@@ -49,7 +49,7 @@ export default class CreatePowerpoint extends React.Component {
 
     axios.post('/generatePowerpoint', {
       fileName: fileName,
-      date: this.props.date,
+      date: this.props.formatDate(this.props.date),
       speaker: this.props.speaker,
       title: this.props.title,
       morning: this.props.morning,
@@ -133,6 +133,7 @@ export default class CreatePowerpoint extends React.Component {
           <Datepanel
             handleChangeDateParent={this.props.handleChangeDateParent.bind(this)} date={this.props.date}
             handleChangeMorningParent={this.props.handleChangeMorningParent.bind(this)} morning={this.props.morning}
+            formatDate={this.props.formatDate.bind(this)}
           />
         </div>
 
