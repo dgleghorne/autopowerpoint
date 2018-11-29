@@ -19,14 +19,14 @@ function generate(fileName, date, morning, speaker, title, reading1, reader1, pa
     addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading1, reader1, pageNo1)
     addInterstitial(pptx, interstitial)
-    addSong(pptx, songsArray[0], backgroundColour, textColour)
+    addSong(pptx, songsArray[1], backgroundColour, textColour)
     addInterstitial(pptx, interstitial)
-    addSong(pptx, songsArray[0], backgroundColour, textColour)
+    addSong(pptx, songsArray[2], backgroundColour, textColour)
     addInterstitial(pptx, interstitial)
     addBibleReading(pptx, reading2, reader2, pageNo2)
     addInterstitial(pptx, interstitial)
     if(noOfSongs == 4 || noOfSongs == 5){
-      addSong(pptx, songsArray[0], backgroundColour, textColour)
+      addSong(pptx, songsArray[3], backgroundColour, textColour)
       addInterstitial(pptx, interstitial)
     }
     if(noOfSongs == 5){
