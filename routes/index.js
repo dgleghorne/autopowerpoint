@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/generatepowerpoint/', function(req, res) {
 
+  console.log("req", req)
   let stringifiedSongArray = JSON.stringify(req.body.songsArray)
 
   var filename = req.body.fileName

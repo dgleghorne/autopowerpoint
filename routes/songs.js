@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Song = require('../models/song')
+var iph = require('./iph')
 
 //create new song
 router.post('/create/', function(req, res, next){
@@ -20,18 +21,21 @@ router.post('/create/', function(req, res, next){
 
 //return all songs
 router.get('/find/', function(req, res){
-  Song.find(function(err, songs){
-    if(err){return next(err)}
-    res.json(songs)
-  })
+  // Song.find(function(err, songs){
+  //   if(err){return next(err)}
+  //   res.json(songs)
+  // })
+  res.json(iph);
 })
 
 //return all titles of songs
 router.get('/find/titles/:type', function(req, res){
-  Song.find({type: req.params.type},'title', function(err, songs){
-    if(err){return next(err)}
-    res.json(songs)
-  })
+  // Song.find({type: req.params.type},'title', function(err, songs){
+  //   if(err){return next(err)}
+  //   res.json(songs)
+  // })
+  var songs = iph.filter(song => song.type === req.params.type);
+  res.json(songs);
 })
 
 //return all types of songs
@@ -44,18 +48,22 @@ router.get('/find/types/', function(req, res){
 
 //return song by title
 router.get('/find/:title', function(req, res){
-  Song.find({title: req.params.title },function(err, songs){
-    if(err){return next(err)}
-    res.json(songs)
-  })
+  // Song.find({title: req.params.title },function(err, songs){
+  //   if(err){return next(err)}
+  //   res.json(songs)
+  // })
+  var titles = iph.filter(song => song.title === req.params.title);
+  res.json(titles);
 })
 
 //return song by id
 router.get('/find/:id', function(req, res){
-    Song.find({_id: req.params.id },function(err, songs){
-        if(err){return next(err)}
-        res.json(songs)
-    })
+    // Song.find({_id: req.params.id },function(err, songs){
+    //     if(err){return next(err)}
+    //     res.json(songs)
+    // })
+  var songs = iph.filter(song => song.id === req.params.id);
+  res.json(songs);
 })
 
 //Delete songs by title
