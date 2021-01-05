@@ -10,7 +10,7 @@
     "unit_test": "mocha test/unit/setup.js test/unit/*"
   },
   "dependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.21.1",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
