@@ -24,7 +24,7 @@
     "morgan": "~1.8.1",
     "nodemon": "^1.18.7",
     "pptxgenjs": "^2.1.0",
-    "pug": "~2.0.0-beta11",
+    "pug": "~3.0.1",
     "react": "^15.6.1",
     "react-bootstrap-table": "^4.0.2",
     "react-bootstrap-toggle": "^2.3.1",
