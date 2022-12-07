@@ -14,7 +14,7 @@
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
-    "express": "~4.15.2",
+    "express": "~4.17.3",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "jquery": "^3.2.1",
